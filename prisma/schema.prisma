@@ -51,7 +51,8 @@ model PageContent {
 model Statistik {
   id            String @id @default(cuid())
   jumlahPenduduk Int
+  jumlahKK       Int    @default(0)    
   luasWilayah   Float
-  jumlahUMKM    Int
+  jumlahDusun    Int    @default(0) 
   updatedAt     DateTime @updatedAt
 }

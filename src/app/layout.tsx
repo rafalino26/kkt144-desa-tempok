@@ -2,6 +2,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import 'leaflet/dist/leaflet.css';
 import AppShell from './components/layout/AppShell';// Pastikan path ini benar
 
 // --- Tambahan untuk v4 ---
