@@ -1,17 +1,26 @@
 // src/app/page.tsx
-import { ArrowRight, Users, Map, Store, MapPin } from 'lucide-react'; // <-- LogIn, LogOut dihapus
+import { ArrowRight, Users, Map, Store, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { db } from '@/app/lib/prisma'; // Sesuai path yang kamu berikan
-// import { redirect } from 'next/navigation'; // <-- Dihapus, tidak perlu lagi
-
-// Import v4 yang Benar
+import { db } from '@/app/lib/prisma';
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]"; // Path ke authOptions v4 kamu
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import EditBadge from '@/app/components/ui/EditBadge';
+import type { Post } from '@prisma/client'; // <-- 1. TAMBAHKAN IMPORT TIPE POST
 
-import EditBadge from '@/app/components/ui/EditBadge'; // Sesuai path yang kamu berikan
+// 2. TAMBAHKAN INTERFACE UNTUK TIPE KEMBALIAN DATA
+interface PageData {
+  title: string;
+  subtitle: string;
+  stats: {
+    penduduk: number;
+    wilayah: number;
+    umkm: number; // Sesuai dengan getPageData kamu saat ini
+  };
+  posts: Post[]; // <-- Beri tahu TypeScript bahwa ini adalah array dari 'Post'
+}
 
-// Fungsi untuk mengambil data (ini akan berjalan di server)
-async function getPageData() {
+// 3. TAMBAHKAN TIPE KEMBALIAN ': Promise<PageData>' PADA FUNGSI
+async function getPageData(): Promise<PageData> {
   const heroTitle = await db.pageContent.findFirst({
     where: { slug: 'hero-title' },
     select: { content: true }
@@ -44,7 +53,6 @@ async function getPageData() {
   };
 }
 
-// <-- FUNGSI 'handleLogout' DIHAPUS DARI SINI -->
 
 export default async function Home() {
   const data = await getPageData();
@@ -55,11 +63,8 @@ export default async function Home() {
   const isAdmin = !!session?.user; // Cek apakah ada sesi (artinya admin login)
 
   return (
-    // 'relative' sudah tidak diperlukan lagi di sini
     <div className="container p-4 mx-auto sm:p-6 lg:p-8">
       
-      {/* <-- BLOK KODE TOMBOL LOGIN/LOGOUT YANG KAMU PASTE DIHAPUS DARI SINI --> */}
-
       <div className="space-y-12">
 
         {/* 1. HERO SECTION (Sekarang dinamis) */}
@@ -67,7 +72,6 @@ export default async function Home() {
                             bg-gradient-to-br from-brand-primary/70 via-brand-light/60 to-brand-primary/70 
                             border border-black/5 shadow-sm">
           
-          {/* Edit Badge untuk Hero Section */}
           {isAdmin && (
             <EditBadge href="/admin/edit/hero" label="Edit Hero" />
           )}
@@ -98,7 +102,7 @@ export default async function Home() {
         </section>
 
         {/* 2. KARTU STATISTIK (Sekarang dinamis) */}
-        <section className="relative"> {/* Tambah 'relative' untuk posisi EditBadge */}
+        <section className="relative">
           <h2 className="mb-4 text-2xl font-semibold text-ink">
             Sekilas Info
           </h2>
@@ -139,7 +143,7 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* 3. LOKASI & PETA INTERAKTIF (Masih statis, tidak apa-apa) */}
+        {/* 3. LOKASI & PETA INTERAKTIF */}
         <section>
           <h2 className="mb-4 text-2xl font-semibold text-ink">
             Lokasi Kami
@@ -177,7 +181,7 @@ export default async function Home() {
         </section>
 
         {/* 4. BERITA & KEGIATAN (Sekarang dinamis) */}
-        <section className="relative"> {/* Tambah 'relative' untuk posisi EditBadge */}
+        <section className="relative">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-semibold text-ink">
               Berita & Kegiatan
@@ -191,17 +195,17 @@ export default async function Home() {
           )}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             
+            {/* ERROR TIDAK AKAN MUNCUL LAGI DI SINI */}
             {data.posts.map((post) => (
               <Link 
                 key={post.id}
                 href={`/berita/${post.id}`}
                 className="block p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow relative"
               >
-                 {/* Edit Badge untuk setiap Post (jika admin) */}
                  {isAdmin && (
                     <EditBadge 
                       href={`/admin/edit/berita/${post.id}`} 
-                      label="Edit" // Label lebih singkat untuk tiap post
+                      label="Edit"
                     />
                  )}
                 <span className="text-xs text-ink/60">
