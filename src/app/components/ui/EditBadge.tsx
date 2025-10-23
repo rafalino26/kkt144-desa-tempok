@@ -1,29 +1,25 @@
-"use client";
-import React from "react";
-import { useAuth } from "@/app/lib/auth";
+// src/components/EditBadge.tsx
+import Link from 'next/link';
+import { Pencil } from 'lucide-react';
 
-type Props = {
-  /** tooltip/title */
-  title?: string;
-  /** pesan yang mau di-alert saat diklik (opsional) */
-  message?: string;
-  className?: string;
-};
+interface EditBadgeProps {
+  href: string; // Link ke halaman edit (misal: /admin/edit/hero)
+  label: string; // Teks yang ditampilkan di badge (misal: "Edit Hero")
+}
 
-export default function EditBadge({ title = "Edit", message, className = "" }: Props) {
-  const { isAdmin } = useAuth();
-  if (!isAdmin) return null;
-
+export default function EditBadge({ href, label }: EditBadgeProps) {
   return (
-    <button
-      title={title}
-      onClick={() => {
-        if (message) alert(message);
-      }}
-      className={`absolute right-2 top-2 inline-flex items-center justify-center size-8 rounded-full border bg-white/90 shadow-sm hover:bg-white ${className}`}
-      aria-label="Edit section"
+    <Link
+      href={href}
+      className="absolute top-4 right-4 z-10 
+                 inline-flex items-center gap-1 
+                 rounded-full bg-brand-primary px-3 py-1 text-xs font-semibold text-white 
+                 shadow-md transition-transform duration-200 
+                 hover:scale-105 hover:bg-brand-primary/90"
+      aria-label={`Edit ${label}`}
     >
-      ✎
-    </button>
+      <Pencil size={14} />
+      <span>{label}</span>
+    </Link>
   );
 }

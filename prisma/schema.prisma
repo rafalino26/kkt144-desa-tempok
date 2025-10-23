@@ -1,0 +1,57 @@
+// prisma/schema.prisma
+
+// Ini memberitahu Prisma Client cara terhubung
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Ini memberitahu Prisma (CLI) cara terhubung
+datasource db {
+  provider = "postgresql" // Kita pakai Postgres (Neon)
+  url      = env("DATABASE_URL") // Ambil URL dari file .env
+
+  // 'prisma' adalah mode modern untuk mengelola relasi
+  relationMode = "prisma"
+}
+
+// --- MODEL DATABASE KITA ---
+
+// Model untuk Admin (untuk login nanti)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  nama      String
+  passwordHash String // Kita tidak simpan password, tapi HASH-nya
+  createdAt DateTime @default(now())
+}
+
+// Model untuk Berita & Kegiatan
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   @db.Text // @db.Text agar bisa nulis panjang
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Model untuk konten "statis" (Visi, Misi, Sejarah, dll)
+// Ini sempurna untuk ide "inline editing" kamu
+model PageContent {
+  id      String @id @default(cuid())
+
+  // 'slug' adalah pengenal unik halaman, misal: "hero-title", "visi-misi", "sejarah"
+  slug    String @unique
+  content String @db.Text
+
+  updatedAt DateTime @updatedAt
+}
+
+// Model untuk data Statistik (contoh)
+model Statistik {
+  id            String @id @default(cuid())
+  jumlahPenduduk Int
+  luasWilayah   Float
+  jumlahUMKM    Int
+  updatedAt     DateTime @updatedAt
+}

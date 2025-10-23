@@ -1,29 +1,63 @@
+// src/app/components/AppShell.tsx
 "use client";
-import React from "react";
-import Navbar from "./navbar";
-import Footer from "./Footer";
-import MobileSidebar from "./MobileSidebar";
 
-export default function AppShell({ children }: { children: React.ReactNode }) {
+import { useState } from 'react';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import type { Session } from 'next-auth'; // <-- Impor tipe Session
+
+// Definisikan tipe untuk props
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+// Data link navigasi
+const navItems: NavItem[] = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Profil Desa', href: '/profil' },
+  { label: 'Potensi Desa', href: '/potensi' },
+  { label: 'Berita', href: '/berita' },
+  { label: 'Layanan', href: '/layanan' },
+  { label: 'Kontak', href: '/kontak' },
+];
+
+// Terima prop 'session'
+export default function AppShell({ 
+  children,
+  session
+}: { 
+  children: React.ReactNode,
+  session: Session | null // <-- Terima prop session
+}) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="min-h-dvh flex flex-col bg-surface">
-      {/* Desktop: Navbar + Footer */}
-      <div className="hidden md:block">
-        <Navbar />
-      </div>
+    <div className="flex flex-col min-h-screen">
+      {/* HEADER (NAVBAR DESKTOP) */}
+      <Header 
+        navItems={navItems} 
+        onMenuClick={() => setIsSidebarOpen(true)} 
+        session={session} // <-- Oper session ke Header
+      />
 
-      {/* Mobile: Sidebar sebagai header */}
-      <div className="md:hidden">
-        <MobileSidebar />
-      </div>
+      {/* SIDEBAR (NAVIGASI MOBILE) */}
+      <Sidebar 
+        navItems={navItems} 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+        session={session} // <-- Oper session ke Sidebar
+      />
 
-      <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+      {/* Konten Utama Halaman */}
+      <main className="flex-grow">
         {children}
       </main>
 
-      <div className="hidden md:block">
-        <Footer />
-      </div>
+      {/* FOOTER */}
+      <footer className="w-full p-6 text-center bg-brand-dark text-surface">
+        <p>© 2025 Desa Tempok, Tompaso, Minahasa. Mahasiswa KKT [Nama Univ].</p>
+      </footer>
     </div>
   );
 }
