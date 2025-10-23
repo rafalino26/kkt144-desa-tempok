@@ -18,7 +18,6 @@ const navItems: NavItem[] = [
   { label: 'Profil Desa', href: '/profil' },
   { label: 'Potensi Desa', href: '/potensi' },
   { label: 'Berita', href: '/berita' },
-  { label: 'Layanan', href: '/layanan' },
   { label: 'Kontak', href: '/kontak' },
 ];
 

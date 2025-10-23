@@ -62,11 +62,31 @@ export default function MapComponent() {
         const map = L.map(mapDiv).setView(position, 14);
         mapInstanceRef.current = map; // Simpan instance peta
 
+        
         // --- 5. Tambah Tile Layer ---
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        //
+        // DI SINI TEMPAT MENGGANTI DESAIN PETA:
+        // Cukup ganti URL di L.tileLayer di bawah ini.
+        //
+        // === CONTOH TILE LAYER LAIN ===
+        //
+        // Peta Satelit (Esri)
+        // const tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+        // const attribution = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+        //
+        // Peta Hitam Putih (Stamen Toner)
+        // const tileUrl = 'https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}.png';
+        // const attribution = '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a>, &copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a>, &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>';
+        //
+        // Peta OpenStreetMap (Standar) - YANG AKTIF SEKARANG
+        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+        
+        L.tileLayer(tileUrl, { // Gunakan variabel tileUrl
+          attribution: attribution, // Gunakan variabel attribution
           maxZoom: 19
         }).addTo(map);
+
 
         // --- 6. Tambah Marker ---
         const marker = L.marker(position).addTo(map);
@@ -111,4 +131,5 @@ export default function MapComponent() {
     />
   );
 }
+
 
