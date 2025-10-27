@@ -1,7 +1,6 @@
-// src/pages/api/auth/[...nextauth].ts
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { db } from '@/app/lib/prisma'; // <-- Pastikan path ini benar
+import { db } from '@/app/lib/prisma'; 
 import bcrypt from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";
 
@@ -18,25 +17,22 @@ export const authOptions: NextAuthOptions = {
         
         const email = String(credentials.email ?? "");
         const password = String(credentials.password ?? "");
-        
-        // Menggunakan 'db' dari lib/prisma.ts kita
         const user = await db.user.findUnique({ where: { email } });
         
         if (!user) return null;
         
         const ok = await bcrypt.compare(password, user.passwordHash);
         if (!ok) return null;
-        
-        // Menggunakan 'nama' dari skema kita
+
         return { id: String(user.id), email: user.email, name: user.nama ?? undefined };
       },
     }),
   ],
   pages: { 
-    signIn: "/login" // Arahkan ke halaman login kustom kita
+    signIn: "/login" 
   },
   session: { 
-    strategy: "jwt" // Gunakan JWT untuk session
+    strategy: "jwt"
   },
 };
 

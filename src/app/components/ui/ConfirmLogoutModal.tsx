@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { X, LogOut } from 'lucide-react';
-import { signOut } from 'next-auth/react';  // ⬅️ gunakan ini
+import { signOut } from 'next-auth/react';  
 
 type Props = { onClose: () => void };
 
@@ -25,9 +25,8 @@ export default function ConfirmLogoutModal({ onClose }: Props) {
             Batal
           </button>
 
-          {/* Langsung signOut tanpa halaman konfirmasi */}
           <button
-            onClick={() => signOut({ callbackUrl: '/' })}   // ⬅️ langsung redirect ke /
+            onClick={() => signOut({ callbackUrl: '/' })}  
             className="inline-flex items-center gap-1.5 rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700"
           >
             <LogOut size={16} />

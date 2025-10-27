@@ -1,59 +1,68 @@
 'use client';
 
+import { Edit, Users, Home as HomeIcon, Map, MapPin } from 'lucide-react';
+import type { StatsData } from '@/app/types';
 import StatsCard from '@/app/components/ui/StatsCard';
-import { Users, UsersRound, Map, Home, Edit } from 'lucide-react'; 
-import type { StatsData } from '@/app/types'; // Impor tipe
 
-interface StatsSectionProps {
-  stats: StatsData; // Gunakan tipe yang diimpor
+export type StatsSectionProps = {
+  stats: StatsData;
   isAdmin: boolean;
   onEditClick: () => void;
-}
+};
 
 export default function StatsSection({ stats, isAdmin, onEditClick }: StatsSectionProps) {
   return (
-    <section className="relative mb-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-semibold text-ink">
-          Sekilas Info
-        </h2>
+    <section className="relative">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-ink">Sekilas Info</h2>
+          <p className="text-xs text-gray-500">
+            Data dasar desa Tempok
+          </p>
+        </div>
+
         {isAdmin && (
           <button
             onClick={onEditClick}
-            className="flex items-center gap-1.5 rounded-full
-                       bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700
-                       hover:bg-blue-200 transition-colors"
+            className="inline-flex items-center gap-1.5 self-start rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-200"
           >
             <Edit size={12} />
-            Edit Info
+            Edit Data
           </button>
         )}
       </div>
-      
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5">
+
+      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard
           Icon={Users}
           label="Jumlah Penduduk"
-          value={stats.penduduk.toLocaleString('id-ID')}
-          unit="Jiwa"
+          value={stats.penduduk.toString()}
+          unit="jiwa"
+          lastUpdated={stats.lastUpdatedPenduduk}
         />
+
         <StatsCard
-          Icon={UsersRound}
+          Icon={HomeIcon}
           label="Jumlah KK"
-          value={stats.kk.toLocaleString('id-ID')}
-          unit="Keluarga"
+          value={stats.kk.toString()}
+          unit="KK"
+          lastUpdated={stats.lastUpdatedKK}
         />
+
         <StatsCard
           Icon={Map}
           label="Luas Wilayah"
-          value={stats.wilayah.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 1 })}
-          unit="Hektar"
+          value={stats.wilayah.toString()}
+          unit="km²"
+          lastUpdated={stats.lastUpdatedWilayah}
         />
+
         <StatsCard
-          Icon={Home}
-          label="Jumlah Jaga"
-          value={stats.dusun.toLocaleString('id-ID')}
-          unit="Jaga"
+          Icon={MapPin}
+          label="Dusun"
+          value={stats.dusun.toString()}
+          unit=""
+          lastUpdated={stats.lastUpdatedDusun}
         />
       </div>
     </section>

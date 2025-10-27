@@ -17,7 +17,7 @@ interface HeaderProps {
 export default function Header({ navItems, onMenuClick, session }: HeaderProps) {
   const isAdmin = !!session?.user;
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false); // ⬅️ baru
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false); 
 
   return (
     <>
@@ -41,7 +41,6 @@ export default function Header({ navItems, onMenuClick, session }: HeaderProps) 
 
           <div className="flex items-center">
             {isAdmin ? (
-              // Tombol ini SEKARANG hanya buka modal
               <button
                 onClick={() => setIsConfirmOpen(true)}
                 className="flex items-center justify-center w-10 h-10 p-2 text-sm font-medium rounded-full text-red-600 

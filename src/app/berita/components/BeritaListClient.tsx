@@ -9,13 +9,10 @@ import AddBeritaModal from '@/app/components/ui/AddBeritaModal';
 import EditBeritaModal from '@/app/components/ui/EditBeritaModal';
 import DeleteConfirmationModal from '@/app/components/ui/DeleteConfirmationModal'; 
 
-// --- Helper Functions (Perbaikan Tipe Return) ---
-function cleanHtml(html: string | null): string { // <-- Terima null juga
+function cleanHtml(html: string | null): string { 
   return html ? html.replace(/<[^>]*>?/gm, '') : '';
 }
-// ---------------------
 
-// --- Komponen AdminPostCard (Update Tombol) ---
 interface AdminPostCardProps {
   post: Post;
   isAdmin: boolean;
@@ -24,7 +21,6 @@ interface AdminPostCardProps {
   isDeleting: boolean; 
 }
 const AdminPostCard = ({ post, isAdmin, onEditClick, onDeleteClick, isDeleting }: AdminPostCardProps) => {
-  // Panggil helper dengan post.content (yang bisa null)
   const cleanContent = cleanHtml(post.content);
 
   return (
@@ -33,13 +29,11 @@ const AdminPostCard = ({ post, isAdmin, onEditClick, onDeleteClick, isDeleting }
       
       {isAdmin && (
         <div className="absolute top-3 right-3 z-10 flex gap-1.5">
-          {/* Tombol Edit (Buka Modal) */}
           <button 
              onClick={() => onEditClick(post)} 
              className="p-1.5 bg-gray-100 rounded text-blue-600 hover:bg-gray-200 shadow-sm" aria-label="Edit">
             <Edit size={14} />
           </button>
-          {/* Tombol Delete (Buka Modal Konfirmasi) */}
           <button
             onClick={() => onDeleteClick(post)} 
             disabled={isDeleting} 
@@ -51,13 +45,12 @@ const AdminPostCard = ({ post, isAdmin, onEditClick, onDeleteClick, isDeleting }
         </div>
       )}
 
-      {/* Konten Teks */}
       <div className="pr-16"> 
         <Link
-  href={`/berita/${post.id}`}
-  className="block group"
-  aria-label={post.title || 'Berita'}
->
+          href={`/berita/${post.id}`}
+          className="block group"
+          aria-label={post.title || 'Berita'}
+        >
   <h3 className="font-semibold text-lg text-ink line-clamp-2 group-hover:text-brand-primary transition-colors">
     {post.title || 'Tanpa Judul'}
   </h3>
@@ -72,7 +65,6 @@ const AdminPostCard = ({ post, isAdmin, onEditClick, onDeleteClick, isDeleting }
     </div>
   );
 };
-// ---------------------------------------------
 
 
 interface BeritaListClientProps {
@@ -89,7 +81,6 @@ export default function BeritaListClient({ initialPosts, isAdmin }: BeritaListCl
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null); 
 
-  // --- Fungsi untuk Buka Modal ---
   const handleOpenEditModal = (post: Post) => {
     setSelectedPost(post);
     setIsEditModalOpen(true);
@@ -98,9 +89,7 @@ export default function BeritaListClient({ initialPosts, isAdmin }: BeritaListCl
     setSelectedPost(post);
     setIsDeleteConfirmOpen(true);
   };
-  // -----------------------------
 
-  // Fungsi Delete (Dipanggil dari Modal Konfirmasi)
   const executeDelete = () => {
     if (!selectedPost) return; 
     const postIdToDelete = selectedPost.id; 
@@ -119,12 +108,10 @@ export default function BeritaListClient({ initialPosts, isAdmin }: BeritaListCl
     });
   };
 
-  // Callback setelah post baru dibuat
   const handlePostCreated = (newPost: Post) => {
     setPosts(currentPosts => [newPost, ...currentPosts]); 
   };
 
-  // Callback setelah post diupdate
   const handlePostUpdated = (updatedPost: Post) => {
     setPosts(currentPosts => 
       currentPosts.map(p => p.id === updatedPost.id ? updatedPost : p)
@@ -134,7 +121,6 @@ export default function BeritaListClient({ initialPosts, isAdmin }: BeritaListCl
 
   return (
     <div>
-      {/* Tombol Tambah Berita Baru */}
       {isAdmin && (
         <div className="mb-6 text-right"> 
           <button
@@ -148,14 +134,12 @@ export default function BeritaListClient({ initialPosts, isAdmin }: BeritaListCl
         </div>
       )}
 
-      {/* Tampilkan error delete jika ada */}
       {deleteError && ( 
          <div className="mb-4 rounded border border-red-400 bg-red-100 p-3 text-sm text-red-700">
           Error: {deleteError}
         </div> 
       )}
 
-      {/* Grid berita */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {posts.length > 0 ? (
           posts.map(post => (
@@ -175,7 +159,6 @@ export default function BeritaListClient({ initialPosts, isAdmin }: BeritaListCl
         )}
       </div>
 
-      {/* --- Render Semua Modal --- */}
       {isAddModalOpen && (
         <AddBeritaModal 
           onClose={() => setIsAddModalOpen(false)} 
@@ -189,26 +172,23 @@ export default function BeritaListClient({ initialPosts, isAdmin }: BeritaListCl
           onPostUpdated={handlePostUpdated} 
         />
       )}
-      {/* Gunakan state 'isDeleteConfirmOpen' */}
+
       <DeleteConfirmationModal 
         isOpen={isDeleteConfirmOpen} 
         onClose={() => { setIsDeleteConfirmOpen(false); setSelectedPost(null); }}
         onConfirm={executeDelete} 
-        // --- PERBAIKAN SINTAKS: Tambahkan '}' penutup ---
          itemName={`berita "${
  (selectedPost?.title ?? null) ?? truncateText(selectedPost?.content ?? null, 20)
  }"`}
-        // --------------------------------------------
         isLoading={isDeleting} 
       />
-      {/* ------------------------- */}
+
     </div>
   );
 }
 
-// Tambahkan fungsi truncateText di sini juga
-function truncateText(text: string | null, length: number = 50): string { // <-- Terima null
+function truncateText(text: string | null, length: number = 50): string {
     if (!text) return '(Tanpa Konten)';
-    const cleanText = text.replace(/<[^>]*>?/gm, ''); // Hapus HTML
+    const cleanText = text.replace(/<[^>]*>?/gm, '');
     return cleanText.length > length ? cleanText.substring(0, length) + '...' : cleanText;
 }

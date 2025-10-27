@@ -1,14 +1,12 @@
 @import "tailwindcss";
 
-/* Hanya warna brand + surface & text */
 @theme {
   --color-brand-primary: #b3d43d;
   --color-brand-light:   #e0f687;
   --color-brand-dark:    #5e644f;
 
-  --color-surface: #f7f9fd; /* opsional */
-  --color-ink:     #171717; /* opsional */
+  --color-surface: #f7f9fd;
+  --color-ink:     #171717; 
 }
 
-/* (opsional) base sederhana biar konsisten */
 body { @apply bg-surface text-ink; }

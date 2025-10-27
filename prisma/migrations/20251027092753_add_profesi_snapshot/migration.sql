@@ -1,0 +1,23 @@
+-- AlterTable
+ALTER TABLE "Statistik" ADD COLUMN     "updatedDusun" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedKK" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedPenduduk" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "updatedWilayah" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+-- CreateTable
+CREATE TABLE "ProfesiSnapshot" (
+    "id" TEXT NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ProfesiSnapshot_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ProfesiItem" (
+    "id" TEXT NOT NULL,
+    "jobName" TEXT NOT NULL,
+    "jumlah" INTEGER NOT NULL,
+    "snapshotId" TEXT NOT NULL,
+
+    CONSTRAINT "ProfesiItem_pkey" PRIMARY KEY ("id")
+);

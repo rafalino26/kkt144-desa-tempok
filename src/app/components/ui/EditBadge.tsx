@@ -1,10 +1,9 @@
-// src/components/EditBadge.tsx
 import Link from 'next/link';
 import { Pencil } from 'lucide-react';
 
 interface EditBadgeProps {
-  href: string; // Link ke halaman edit (misal: /admin/edit/hero)
-  label: string; // Teks yang ditampilkan di badge (misal: "Edit Hero")
+  href: string; 
+  label: string; 
 }
 
 export default function EditBadge({ href, label }: EditBadgeProps) {

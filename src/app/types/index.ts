@@ -1,28 +1,40 @@
-import type { Post } from '@prisma/client';
-
-// Tipe untuk Hero
-export interface HeroData {
+export type HeroData = {
   title: string;
   subtitle: string;
-}
+};
 
-// Tipe untuk Stats (konsisten pakai 'wilayah')
-export interface StatsData {
+export type StatsData = {
   penduduk: number;
   kk: number;
   wilayah: number;
   dusun: number;
-}
 
-// Tipe untuk Data Profesi (untuk ChartSection)
-export interface ProfesiData {
-  name: string;
-  value: number;
-}
+  lastUpdatedPenduduk: string | null;
+  lastUpdatedKK: string | null;
+  lastUpdatedWilayah: string | null;
+  lastUpdatedDusun: string | null;
+};
 
-// Tipe gabungan untuk data halaman
-export interface PageData {
+export type ProfesiData = {
+  name: string;  
+  value: number;  
+};
+
+export type ProfesiSectionData = {
+  items: ProfesiData[];
+  lastUpdated: string | null; 
+};
+
+export type PageData = {
   hero: HeroData;
   stats: StatsData;
-  posts: Post[];
-}
+  posts: {
+    id: string;
+    title: string;
+    content: string;
+    published: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
+  profesi: ProfesiSectionData;
+};

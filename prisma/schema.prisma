@@ -49,10 +49,37 @@ model PageContent {
 
 // Model untuk data Statistik (contoh)
 model Statistik {
-  id            String @id @default(cuid())
-  jumlahPenduduk Int
-  jumlahKK       Int    @default(0)    
-  luasWilayah   Float
-  jumlahDusun    Int    @default(0) 
-  updatedAt     DateTime @updatedAt
+  id               String   @id @default(cuid())
+
+  jumlahPenduduk   Int
+  updatedPenduduk  DateTime @default(now())
+
+  jumlahKK         Int      @default(0)
+  updatedKK        DateTime @default(now())
+
+  luasWilayah      Float
+  updatedWilayah   DateTime @default(now())
+
+  jumlahDusun      Int      @default(0)
+  updatedDusun     DateTime @default(now())
+
+  updatedAt        DateTime @updatedAt
+}
+
+
+model ProfesiSnapshot {
+  id        String         @id @default(cuid())
+  updatedAt DateTime       @default(now())
+
+  // Relasi ke item-item profesi di snapshot ini
+  items     ProfesiItem[]
+}
+
+model ProfesiItem {
+  id           String           @id @default(cuid())
+  jobName      String
+  jumlah       Int
+
+  snapshot     ProfesiSnapshot  @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
+  snapshotId   String
 }

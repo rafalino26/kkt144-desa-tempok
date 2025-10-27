@@ -2,70 +2,67 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react'; 
-import { useRouter } from 'next/navigation'; // Kita mungkin butuh ini untuk refresh
+import { useRouter } from 'next/navigation'; 
 import { X } from 'lucide-react';
 import InputPasswordWithToggle from './InputPasswordWithToggle';
 
 interface LoginModalProps {
-  onClose: () => void; // Fungsi untuk menutup modal
+  onClose: () => void; 
 }
 
 export default function LoginModal({ onClose }: LoginModalProps) {
-  const router = useRouter(); // Untuk refresh halaman setelah login
+  const router = useRouter(); 
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // State loading
+  const [isLoading, setIsLoading] = useState(false); 
 
-  // Handle submit form
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null); 
-    setIsLoading(true); // Mulai loading
+    setIsLoading(true);
 
     if (!email || !password) {
       setError('Email dan password harus diisi.');
-      setIsLoading(false); // Hentikan loading
+      setIsLoading(false);
       return;
     }
 
     try {
       const result = await signIn('credentials', {
-        redirect: false, // Penting! Jangan redirect otomatis
+        redirect: false, 
         email: email,
         password: password,
       });
 
-      setIsLoading(false); // Hentikan loading
+      setIsLoading(false); 
 
       if (result?.error) {
-        // Tampilkan pesan error spesifik dari next-auth jika ada
+
         setError(result.error === 'CredentialsSignin' 
                  ? 'Email atau password salah.' 
                  : 'Terjadi kesalahan. Coba lagi nanti.');
       } else if (result?.ok) {
-        onClose(); // Tutup modal jika berhasil
-        router.refresh(); // Refresh halaman untuk update session di header
+        onClose();
+        router.refresh();
       }
     } catch (err) { 
-      setIsLoading(false); // Hentikan loading
+      setIsLoading(false);
       console.error('Login Gagal:', err); 
       setError('Terjadi kesalahan yang tidak diketahui. Coba lagi nanti.');
     }
   }
 
   return (
-    // Backdrop
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={onClose} // Tutup jika klik backdrop
+      onClick={onClose}
     >
-      {/* Konten Modal */}
       <div 
         className="relative p-8 bg-white rounded-lg shadow-md w-96"
-        onClick={(e) => e.stopPropagation()} // Cegah klik di dalam modal menutupnya
+        onClick={(e) => e.stopPropagation()} 
       >
-        {/* Tombol Close (X) */}
+
         <button 
           onClick={onClose}
           disabled={isLoading}
@@ -82,7 +79,6 @@ export default function LoginModal({ onClose }: LoginModalProps) {
           <p className="mb-4 text-sm text-center text-red-600">{error}</p>
         )}
 
-        {/* Form Login */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label 
@@ -93,7 +89,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
             </label>
             <input
               type="email"
-              id="modal-email" // Gunakan id unik
+              id="modal-email"
               name="email" 
               required
               value={email}
@@ -107,7 +103,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
           <div>
             <InputPasswordWithToggle
               label="Password" 
-              id="modal-password" // Gunakan id unik   
+              id="modal-password"  
               name="password"  
               required
               value={password} 
@@ -122,7 +118,7 @@ export default function LoginModal({ onClose }: LoginModalProps) {
             type="submit"
             disabled={isLoading}
             className="w-full py-2 font-semibold text-white rounded-lg bg-brand-dark hover:bg-brand-dark/90
-                       disabled:bg-gray-400 disabled:cursor-not-allowed" // Style saat loading
+                       disabled:bg-gray-400 disabled:cursor-not-allowed" 
           >
             {isLoading ? 'Memproses...' : 'Login'}
           </button>

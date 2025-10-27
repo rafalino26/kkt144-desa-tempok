@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { ProfesiData } from '@/app/types'; // Impor tipe
+import type { ProfesiData } from '@/app/types';
 import { Plus, Trash2, X } from 'lucide-react';
 
 interface AdminProfesiModalProps {
@@ -10,43 +10,94 @@ interface AdminProfesiModalProps {
   onSave: (newData: ProfesiData[]) => void;
 }
 
-export default function AdminProfesiModal({ initialData, onClose, onSave }: AdminProfesiModalProps) {
-  const [data, setData] = useState(initialData);
+type ProfesiRowForm = {
+  name: string;
+  value: string;
+};
 
-  const handleUpdate = (index: number, field: 'name' | 'value', value: string | number) => {
-    const newData = [...data];
-    if (field === 'value') {
-      newData[index][field] = Number(value) || 0; 
-    } else {
-      newData[index][field] = value as string;
+export default function AdminProfesiModal({
+  initialData,
+  onClose,
+  onSave,
+}: AdminProfesiModalProps) {
+  const [rows, setRows] = useState<ProfesiRowForm[]>(
+    initialData.length > 0
+      ? initialData.map((item) => ({
+          name: item.name,
+          value: item.value === 0 ? '' : item.value.toString(),
+        }))
+      : [
+          {
+            name: '',
+            value: '',
+          },
+        ]
+  );
+
+  const handleChangeName = (index: number, newName: string) => {
+    setRows((prev) => {
+      const copy = [...prev];
+      copy[index] = {
+        ...copy[index],
+        name: newName,
+      };
+      return copy;
+    });
+  };
+
+  const handleChangeValue = (index: number, rawVal: string) => {
+    const numericOnly = rawVal.replace(/[^0-9]/g, '');
+    let cleaned = numericOnly;
+    if (cleaned.length > 1) {
+      cleaned = cleaned.replace(/^0+/, '');
+      if (cleaned === '') cleaned = '0';
     }
-    setData(newData);
+
+    setRows((prev) => {
+      const copy = [...prev];
+      copy[index] = {
+        ...copy[index],
+        value: cleaned,
+      };
+      return copy;
+    });
   };
 
   const handleAdd = () => {
-    setData([...data, { name: '', value: 0 }]);
+    setRows((prev) => [
+      ...prev,
+      {
+        name: '',
+        value: '',
+      },
+    ]);
   };
 
   const handleDelete = (index: number) => {
-    const newData = data.filter((_, i) => i !== index);
-    setData(newData);
+    setRows((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSave = () => {
-    const finalData = data.filter(item => item.name.trim() !== '');
+    const finalData: ProfesiData[] = rows
+      .map((item) => ({
+        name: item.name.trim(),
+        value: item.value === '' ? 0 : Number(item.value),
+      }))
+      .filter((item) => item.name !== '');
+
     onSave(finalData);
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
       onClick={onClose}
     >
-      <div 
+      <div
         className="relative w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-3 right-3 rounded-full p-1.5 text-gray-500 hover:bg-gray-100"
         >
@@ -58,23 +109,28 @@ export default function AdminProfesiModal({ initialData, onClose, onSave }: Admi
         </h3>
 
         <div className="max-h-[60vh] overflow-y-auto space-y-3 pr-2">
-          {data.map((item, index) => (
+          {rows.map((row, index) => (
             <div key={index} className="flex items-center gap-2">
+              {/* Input nama profesi */}
               <input
                 type="text"
-                value={item.name}
-                onChange={(e) => handleUpdate(index, 'name', e.target.value)}
+                value={row.name}
+                onChange={(e) => handleChangeName(index, e.target.value)}
                 placeholder="Nama Profesi (cth: Petani)"
                 className="flex-grow rounded-md border border-gray-300 px-3 py-2
-                           focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           text-sm
+                           focus:outline-none focus:ring-2"
               />
               <input
-                type="number"
-                value={item.value}
-                onChange={(e) => handleUpdate(index, 'value', e.target.value)}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={row.value}
+                onChange={(e) => handleChangeValue(index, e.target.value)}
                 placeholder="Jumlah"
                 className="w-24 rounded-md border border-gray-300 px-3 py-2
-                           focus:outline-none focus:ring-2 focus:ring-blue-500"
+                           text-sm text-right
+                           focus:outline-none"
               />
               <button
                 onClick={() => handleDelete(index)}
@@ -96,6 +152,7 @@ export default function AdminProfesiModal({ initialData, onClose, onSave }: Admi
             <Plus size={16} />
             Tambah Data
           </button>
+
           <div className="flex gap-3">
             <button
               onClick={onClose}
@@ -113,7 +170,6 @@ export default function AdminProfesiModal({ initialData, onClose, onSave }: Admi
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );

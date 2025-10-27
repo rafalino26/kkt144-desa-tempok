@@ -4,38 +4,34 @@ import React from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 
 interface DeleteConfirmationModalProps {
-  isOpen: boolean; // Kontrol dari parent
+  isOpen: boolean; 
   onClose: () => void;
   onConfirm: () => void;
-  itemName?: string; // Nama item yang akan dihapus (opsional)
-  isLoading?: boolean; // Status loading dari parent
+  itemName?: string; 
+  isLoading?: boolean;
 }
 
 export default function DeleteConfirmationModal({ 
   isOpen, 
   onClose, 
   onConfirm, 
-  itemName = 'item ini', // Default message
+  itemName = 'item ini', 
   isLoading = false
 }: DeleteConfirmationModalProps) {
   
-  // Jangan render jika tidak isOpen
   if (!isOpen) {
     return null;
   }
 
   return (
-    // Backdrop
     <div 
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm" // z-index lebih tinggi dari modal lain
+      className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50"
       onClick={onClose} 
     >
-      {/* Konten Modal */}
       <div 
-        className="relative w-full max-w-sm rounded-lg bg-white p-6 shadow-xl" // Lebih kecil (max-w-sm)
+        className="relative w-full max-w-sm rounded-lg bg-white p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Tombol Close (X) - opsional */}
         <button 
           onClick={onClose}
           disabled={isLoading}
@@ -45,13 +41,12 @@ export default function DeleteConfirmationModal({
         </button>
 
         <div className="flex items-start">
-          {/* Ikon Peringatan */}
           <div className="mr-4 flex-shrink-0">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
               <AlertTriangle className="h-6 w-6 text-red-600" aria-hidden="true" />
             </div>
           </div>
-          {/* Teks Konfirmasi */}
+
           <div className="mt-0">
             <h3 className="text-lg font-semibold leading-6 text-gray-900" id="modal-title">
               Konfirmasi Penghapusan
@@ -64,7 +59,6 @@ export default function DeleteConfirmationModal({
           </div>
         </div>
 
-        {/* Tombol Aksi */}
         <div className="mt-5 sm:mt-6 flex flex-row-reverse gap-3">
           <button
             type="button"

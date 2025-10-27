@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { X, LogIn, LogOut } from 'lucide-react';
 import type { Session } from 'next-auth';
-import { signOut } from 'next-auth/react';  // ⬅️ v4 client API
+import { signOut } from 'next-auth/react';  
 
 interface NavItem { label: string; href: string; }
 interface SidebarProps {
@@ -52,7 +52,7 @@ export default function Sidebar({ navItems, isOpen, onClose, session }: SidebarP
         <div className="mt-auto border-t border-brand-dark/10 pt-4">
           {isAdmin ? (
             <button
-              onClick={() => signOut({ callbackUrl: '/' })} // ⬅️ langsung logout & redirect
+              onClick={() => signOut({ callbackUrl: '/' })} 
               className="flex w-full items-center gap-3 rounded-md px-4 py-3 text-lg text-red-600 hover:bg-red-50"
             >
               <LogOut size={22} />

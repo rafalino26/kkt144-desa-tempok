@@ -1,18 +1,15 @@
-// src/app/components/AppShell.tsx
 "use client";
 
 import { useState } from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import type { Session } from 'next-auth'; // <-- Impor tipe Session
+import type { Session } from 'next-auth'; 
 
-// Definisikan tipe untuk props
 interface NavItem {
   label: string;
   href: string;
 }
 
-// Data link navigasi
 const navItems: NavItem[] = [
   { label: 'Beranda', href: '/' },
   { label: 'Profil Desa', href: '/profil' },
@@ -21,40 +18,35 @@ const navItems: NavItem[] = [
   { label: 'Kontak', href: '/kontak' },
 ];
 
-// Terima prop 'session'
 export default function AppShell({ 
   children,
   session
 }: { 
   children: React.ReactNode,
-  session: Session | null // <-- Terima prop session
+  session: Session | null 
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* HEADER (NAVBAR DESKTOP) */}
       <Header 
         navItems={navItems} 
         onMenuClick={() => setIsSidebarOpen(true)} 
-        session={session} // <-- Oper session ke Header
+        session={session} 
       />
 
-      {/* SIDEBAR (NAVIGASI MOBILE) */}
       <Sidebar 
         navItems={navItems} 
         isOpen={isSidebarOpen} 
         onClose={() => setIsSidebarOpen(false)} 
-        session={session} // <-- Oper session ke Sidebar
+        session={session} 
       />
 
-      {/* Konten Utama Halaman */}
       <main className="flex-grow">
         {children}
       </main>
 
-      {/* FOOTER */}
-      <footer className="w-full p-6 text-center bg-brand-dark text-surface">
+      <footer className="w-full p-4 text-center bg-gradient-to-br from-brand-primary/90 via-brand-light/70 to-brand-primary/60 text-brand-dark">
         <p>© 2025 Desa Tempok, Tompaso, Minahasa. Mahasiswa KKT [Nama Univ].</p>
       </footer>
     </div>
