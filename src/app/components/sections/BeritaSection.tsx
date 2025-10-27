@@ -50,11 +50,12 @@ export default function BeritaSection({ posts, isAdmin }: BeritaSectionProps) {
         
         <Link 
           href="/berita" 
-          className="flex items-center gap-1.5 rounded-full
-                     px-3 py-1 text-xs font-medium 
-                     transition-colors
-                     bg-blue-100 text-blue-700 hover:bg-blue-200" 
-        >
+         className="inline-flex items-center gap-1.5 self-start rounded-full
+             bg-brand-light/70 px-3 py-1 text-xs font-medium text-brand-dark
+             ring-1 ring-brand-dark/10
+             hover:bg-brand-light hover:shadow-sm
+             transition-colors"
+>
           {isAdmin ? 'Lihat Semua & Edit' : 'Lihat Semua Berita'}
           <ArrowRight size={12} /> 
         </Link>

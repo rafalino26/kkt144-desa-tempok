@@ -24,8 +24,12 @@ export default function StatsSection({ stats, isAdmin, onEditClick }: StatsSecti
         {isAdmin && (
           <button
             onClick={onEditClick}
-            className="inline-flex items-center gap-1.5 self-start rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-200"
-          >
+            className="inline-flex items-center gap-1.5 self-start rounded-full
+             bg-brand-light/70 px-3 py-1 text-xs font-medium text-brand-dark
+             ring-1 ring-brand-dark/10
+             hover:bg-brand-light hover:shadow-sm
+             transition-colors"
+>
             <Edit size={12} />
             Edit Data
           </button>
