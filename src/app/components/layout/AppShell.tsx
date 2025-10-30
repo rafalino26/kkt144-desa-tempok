@@ -46,7 +46,7 @@ export default function AppShell({
         {children}
       </main>
 
-      <footer className="w-full p-4 text-center bg-gradient-to-br from-brand-primary/90 via-brand-light/70 to-brand-primary/60 text-brand-dark">
+      <footer className="w-full p-4 text-center bg-white shadow-xl text-ink">
         <p>© Desa Tempok, Tompaso, Minahasa. KKT-144 Universitas Sam Ratulangi.</p>
       </footer>
     </div>

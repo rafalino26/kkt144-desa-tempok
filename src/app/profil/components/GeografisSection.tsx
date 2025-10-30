@@ -1,6 +1,11 @@
 'use client';
 
+import { useState, useTransition } from 'react';
 import dynamic from 'next/dynamic';
+import { Edit } from 'lucide-react';
+import AdminGeografiModal from './modal/AdminGeografiModal';
+import { updateProfilGeografis } from '../actions/geografisActions';
+
 
 const MapComponentNoSSR = dynamic(
   () => import('@/app/components/ui/MapComponent'),
@@ -14,31 +19,111 @@ const MapComponentNoSSR = dynamic(
   }
 );
 
-export default function GeografisSection() {
+export interface GeoData {
+  deskripsiLokasi: string;
+  batasUtara: string;
+  batasTimur: string;
+  batasSelatan: string;
+  batasBarat: string;
+  googleMapsUrl: string;
+  lastUpdated: string | null;
+}
+
+export interface GeografisSectionProps {
+  isAdmin: boolean;
+  initialData: GeoData;
+}
+
+export default function GeografisSection({ isAdmin, initialData }: GeografisSectionProps) {
+  const [geoData, setGeoData] = useState<GeoData>(initialData);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const formattedUpdated: string | null = geoData.lastUpdated
+    ? new Date(geoData.lastUpdated).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : null;
+
+function handleSaveGeo(updated: GeoData) {
+  startTransition(async () => {
+    const result = await updateProfilGeografis(updated);
+
+    if (result.success) {
+      setGeoData(result.data);
+      setIsModalOpen(false);
+    } else {
+      console.error(result.message);
+    }
+  });
+}
+
   return (
     <section className="space-y-6">
+      {/* --- HEADER SECTION --- */}
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-xl font-semibold text-ink">
+            Lokasi Desa
+          </h2>
+
+          <p className="text-sm text-gray-600 leading-relaxed max-w-xl">
+            Desa Tempok berada di wilayah dataran tinggi Minahasa, Kecamatan Tompaso.
+          </p>
+
+          {formattedUpdated && (
+            <p className="text-[11px] text-gray-500 leading-none">
+              Terakhir diperbarui:{' '}
+              <span className="font-medium text-ink">{formattedUpdated}</span>
+            </p>
+          )}
+        </div>
+
+        {isAdmin && (
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="inline-flex items-center gap-1.5 self-start rounded-full
+                       bg-brand-primary/80 px-3 py-1 text-[11px] font-medium text-brand-dark
+                       ring-1 ring-brand-dark/20 hover:bg-brand-primary transition-colors"
+          >
+            <Edit size={12} />
+            Edit Geografis
+          </button>
+        )}
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="rounded-xl bg-white p-6 shadow-sm border border-black/5 text-sm text-gray-700 leading-relaxed space-y-4">
           <div>
             <h3 className="text-base font-semibold text-ink">
-              Lokasi & Topografi
+              Lokasi &amp; Topografi
             </h3>
-            <p className="mt-2">
-              Desa Tempok terletak di Kecamatan Tompaso, Kabupaten Minahasa.
-              Wilayah desa berada pada kawasan dataran tinggi Minahasa
-              dengan lahan pertanian dan pemukiman warga.
-              Perkiraan ketinggian: &gt; 600 mdpl (akan dikonfirmasi).
+            <p className="mt-2 whitespace-pre-line">
+              {geoData.deskripsiLokasi}
             </p>
           </div>
 
           <div>
             <h3 className="text-base font-semibold text-ink">Batas Wilayah</h3>
             <ul className="mt-2 text-sm text-gray-700 space-y-1">
-              <li><span className="font-medium text-ink">Utara</span> : (desa tetangga)</li>
-              <li><span className="font-medium text-ink">Timur</span> : (desa tetangga)</li>
-              <li><span className="font-medium text-ink">Selatan</span> : (desa tetangga)</li>
-              <li><span className="font-medium text-ink">Barat</span> : (desa tetangga)</li>
+              <li>
+                <span className="font-medium text-ink">Utara</span> :{' '}
+                {geoData.batasUtara || '(belum diisi)'}
+              </li>
+              <li>
+                <span className="font-medium text-ink">Timur</span> :{' '}
+                {geoData.batasTimur || '(belum diisi)'}
+              </li>
+              <li>
+                <span className="font-medium text-ink">Selatan</span> :{' '}
+                {geoData.batasSelatan || '(belum diisi)'}
+              </li>
+              <li>
+                <span className="font-medium text-ink">Barat</span> :{' '}
+                {geoData.batasBarat || '(belum diisi)'}
+              </li>
             </ul>
           </div>
 
@@ -47,23 +132,42 @@ export default function GeografisSection() {
           </div>
         </div>
 
-        <div className="rounded-xl bg-white shadow-sm border border-black/5 h-[320px] p-4 flex flex-col">
+        <div className="rounded-xl bg-white shadow-sm border border-black/5 p-4 flex flex-col">
           <div className="text-sm font-semibold text-ink mb-3 flex items-center justify-between">
             <span>Peta Lokasi Desa Tempok</span>
-            <a
-              className="text-[11px] font-medium text-brand-dark underline hover:opacity-80"
-              href="https://maps.google.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Buka di Google Maps
-            </a>
+
+            {geoData.googleMapsUrl && (
+              <a
+                className="text-[11px] font-medium text-brand-dark underline hover:opacity-80"
+                href={geoData.googleMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Buka di Google Maps
+              </a>
+            )}
           </div>
-          <div className="flex-1 overflow-hidden rounded-lg ring-1 ring-brand-dark/10">
+
+          <div
+            className="relative flex-1 overflow-hidden rounded-lg ring-1 ring-brand-dark/10 z-[1]"
+            style={{
+              minHeight: '260px',
+              maxHeight: '320px',
+            }}
+          >
             <MapComponentNoSSR />
           </div>
         </div>
       </div>
+
+      {isModalOpen && (
+        <AdminGeografiModal
+          initialData={geoData}
+          isLoading={isPending}
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleSaveGeo}
+        />
+      )}
     </section>
   );
 }

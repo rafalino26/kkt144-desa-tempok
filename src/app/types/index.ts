@@ -8,6 +8,7 @@ export type StatsData = {
   kk: number;
   wilayah: number;
   dusun: number;
+  lastUpdated: string | null;
 
   lastUpdatedPenduduk: string | null;
   lastUpdatedKK: string | null;

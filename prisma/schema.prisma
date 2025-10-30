@@ -1,53 +1,43 @@
-// prisma/schema.prisma
-
-// Ini memberitahu Prisma Client cara terhubung
 generator client {
   provider = "prisma-client-js"
 }
 
-// Ini memberitahu Prisma (CLI) cara terhubung
 datasource db {
-  provider = "postgresql" // Kita pakai Postgres (Neon)
-  url      = env("DATABASE_URL") // Ambil URL dari file .env
-
-  // 'prisma' adalah mode modern untuk mengelola relasi
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
-// --- MODEL DATABASE KITA ---
+/* =======================
+   AUTH / USER / POST
+   ======================= */
 
-// Model untuk Admin (untuk login nanti)
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  nama      String
-  passwordHash String // Kita tidak simpan password, tapi HASH-nya
-  createdAt DateTime @default(now())
+  id           String   @id @default(cuid())
+  email        String   @unique
+  nama         String
+  passwordHash String
+  createdAt    DateTime @default(now())
 }
 
-// Model untuk Berita & Kegiatan
 model Post {
   id        String   @id @default(cuid())
   title     String
-  content   String   @db.Text // @db.Text agar bisa nulis panjang
+  content   String   @db.Text
   published Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// Model untuk konten "statis" (Visi, Misi, Sejarah, dll)
-// Ini sempurna untuk ide "inline editing" kamu
+/* Konten halaman umum (hero home dsb) */
 model PageContent {
-  id      String @id @default(cuid())
-
-  // 'slug' adalah pengenal unik halaman, misal: "hero-title", "visi-misi", "sejarah"
-  slug    String @unique
-  content String @db.Text
-
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  content   String   @db.Text
   updatedAt DateTime @updatedAt
 }
 
-// Model untuk data Statistik (contoh)
+/* Statistik kependudukan ringkas (Home -> Sekilas Info) */
 model Statistik {
   id               String   @id @default(cuid())
 
@@ -66,20 +56,105 @@ model Statistik {
   updatedAt        DateTime @updatedAt
 }
 
-
+/* Snapshot profesi penduduk untuk grafik pie */
 model ProfesiSnapshot {
-  id        String         @id @default(cuid())
-  updatedAt DateTime       @default(now())
-
-  // Relasi ke item-item profesi di snapshot ini
-  items     ProfesiItem[]
+  id          String   @id @default(cuid())
+  // contoh: [{ "name": "Petani", "value": 120 }, ...]
+  items       Json?    
+  capturedAt  DateTime @default(now())
 }
 
-model ProfesiItem {
-  id           String           @id @default(cuid())
-  jobName      String
-  jumlah       Int
+/* =======================
+   PROFIL DESA SECTION
+   ======================= */
 
-  snapshot     ProfesiSnapshot  @relation(fields: [snapshotId], references: [id], onDelete: Cascade)
-  snapshotId   String
+/* Hero section halaman /profil */
+model ProfilHero {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String   @db.Text
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+/* Identitas desa (data administratif) */
+model ProfilIdentitas {
+  id             String   @id @default(cuid())
+
+  namaDesa       String
+  kecamatan      String
+  kabupaten      String
+  provinsi       String
+
+  kodePos        String?
+  kodeKemendagri String?
+
+  koordinat      String?
+  kepalaDesa     String?
+
+  catatan        String?   @db.Text
+
+  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime  @default(now())
+}
+
+/* Visi & Misi */
+model ProfilVisiMisi {
+  id        String   @id @default(cuid())
+  visi      String   @db.Text
+  misi      Json     // ["Mendorong ...", "Meningkatkan ..."]
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+/* Sejarah Desa */
+model ProfilSejarah {
+  id        String   @id @default(cuid())
+  content   String   @db.Text
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+/* Geografis & batas wilayah */
+model ProfilGeografis {
+  id              String   @id @default(cuid())
+
+  deskripsiLokasi String   @db.Text
+  batasUtara      String?
+  batasTimur      String?
+  batasSelatan    String?
+  batasBarat      String?
+
+  googleMapsUrl   String?
+
+  updatedAt       DateTime @updatedAt
+  createdAt       DateTime @default(now())
+}
+
+/* Struktur pemerintah desa (bisa banyak row) */
+model ProfilPerangkatDesa {
+  id        String   @id @default(cuid())
+
+  nama      String
+  jabatan   String
+  urutan    Int      // buat sorting di UI
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+/* Sosial & Ekonomi */
+model ProfilSosialEkonomi {
+  id                        String   @id @default(cuid())
+
+  ringkasan                 String   @db.Text
+  mataPencaharian           String?
+  sektorPendukung           String?
+  catatan                   String?  @db.Text
+
+  jumlahPendudukTekstual    String?
+  catatanPenduduk           String?
+
+  updatedAt                 DateTime @updatedAt
+  createdAt                 DateTime @default(now())
 }
