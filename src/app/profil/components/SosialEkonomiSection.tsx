@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { Edit } from 'lucide-react';
+import Image from 'next/image';
 import type { SosialEkonomiData } from '../components/types';
 import AdminSosialEkonomiModal from './modal/AdminSosialEkonomiModal';
 import { updateSosialEkonomi } from '../actions/sosialEkonomiActions';
@@ -42,7 +43,6 @@ export default function SosialEkonomiSection({
   initialData,
 }: SosialEkonomiSectionProps) {
   const [data, setData] = useState<SosialEkonomiData>(initialData);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -69,7 +69,7 @@ export default function SosialEkonomiSection({
   const paragraphs = data.ringkasan
     ? data.ringkasan
         .split(/\n{2,}/g)
-        .map(s => s.trim())
+        .map((s) => s.trim())
         .filter(Boolean)
     : [];
 
@@ -100,7 +100,8 @@ export default function SosialEkonomiSection({
             onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center gap-1.5 self-start rounded-full
                        bg-brand-primary/80 px-3 py-1 text-[11px] font-medium text-brand-dark
-                       ring-1 ring-brand-dark/20 hover:bg-brand-primary transition-colors"
+                       ring-1 ring-brand-dark/20 hover:bg-brand-primary transition-colors disabled:opacity-50"
+            disabled={isPending}
           >
             <Edit size={12} />
             Edit Sosial &amp; Ekonomi
@@ -129,7 +130,7 @@ export default function SosialEkonomiSection({
         />
       </div>
 
-      {/* DESKRIPSI UTAMA */}
+      {/* DESKRIPSI UTAMA + 2 GAMBAR STATIS */}
       <div className="rounded-xl bg-white p-6 shadow-sm border border-black/5 text-sm text-gray-700 leading-relaxed space-y-4">
         {paragraphs.length > 0 ? (
           paragraphs.map((para, idx) => (
@@ -143,11 +144,36 @@ export default function SosialEkonomiSection({
           </p>
         )}
 
+        {/* Catatan kecil di bawah paragraf */}
         <p className="text-[11px] text-gray-500 leading-relaxed">
           {data.catatan && data.catatan.trim() !== ''
             ? data.catatan
             : 'Data sektor ekonomi desa akan dilengkapi dan diperbarui secara bertahap. Grafik profesi penduduk dapat dilihat pada halaman utama.'}
         </p>
+
+        {/* GALERI: 2 gambar statis di bawah catatan */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3">
+          <figure className="relative h-48 md:h-64 rounded-xl overflow-hidden border border-black/5 shadow-sm">
+            <Image
+              src="/hortikultura.jpeg"
+              alt="Aktivitas bertani di lahan"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+          </figure>
+
+          <figure className="relative h-48 md:h-64 rounded-xl overflow-hidden border border-black/5 shadow-sm">
+            <Image
+              src="/panen.jpeg"
+              alt="Petani Desa Tempok saat panen"
+              fill
+              className="object-cover object-[center_80%]"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </figure>
+        </div>
       </div>
 
       {isModalOpen && (

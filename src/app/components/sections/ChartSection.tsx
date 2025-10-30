@@ -172,7 +172,7 @@ export default function ChartSection({ isAdmin, profesiData, onSaveProfesi }: Ch
 
       <div className="relative z-10">
         <h2 className="mb-4 text-2xl font-semibold text-ink">
-          Lokasi Kami
+          Lokasi Desa
         </h2>
 
         <div className="rounded-xl bg-white shadow-sm h-[400px] p-3">

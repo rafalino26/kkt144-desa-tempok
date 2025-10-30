@@ -126,10 +126,6 @@ function handleSaveGeo(updated: GeoData) {
               </li>
             </ul>
           </div>
-
-          <div className="text-xs text-gray-500">
-            *Batas administratif akan diverifikasi dari pemerintah desa.
-          </div>
         </div>
 
         <div className="rounded-xl bg-white shadow-sm border border-black/5 p-4 flex flex-col">

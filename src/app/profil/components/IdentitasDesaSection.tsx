@@ -84,7 +84,7 @@ export default function IdentitasDesaSection({
           <InfoRow label="Kode Pos" value={identitas.kodePos} />
           <InfoRow label="Kode Kemendagri" value={identitas.kodeKemendagri} />
           <InfoRow label="Koordinat" value={identitas.koordinat} />
-          <InfoRow label="Kepala Desa" value={identitas.kepalaDesa} />
+          <InfoRow label="Hukum Tua" value={identitas.kepalaDesa} />
         </dl>
 
         {identitas.catatan && (

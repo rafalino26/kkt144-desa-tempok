@@ -57,13 +57,13 @@ export default function StatsSection({ stats, isAdmin, onEditClick }: StatsSecti
           Icon={Map}
           label="Luas Wilayah"
           value={stats.wilayah.toString()}
-          unit="km²"
+          unit="Ha"
           lastUpdated={stats.lastUpdatedWilayah}
         />
 
         <StatsCard
           Icon={MapPin}
-          label="Dusun"
+          label="Jumlah Jaga"
           value={stats.dusun.toString()}
           unit=""
           lastUpdated={stats.lastUpdatedDusun}
