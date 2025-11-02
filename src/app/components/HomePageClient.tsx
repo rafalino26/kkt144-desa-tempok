@@ -1,12 +1,10 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
-
 import HeroSection from '@/app/components/sections/HeroSection';
 import StatsSection from '@/app/components/sections/StatsSection';
 import ChartSection from '@/app/components/sections/ChartSection';
 import BeritaSection from '@/app/components/sections/BeritaSection';
-
 import AdminHeroModal from '@/app/components/ui/AdminHeroModal';
 import AdminInfoModal from '@/app/components/ui/AdminInfoModal';
 
@@ -29,9 +27,7 @@ interface HomePageClientProps {
 export default function HomePageClient({ initialData, isAdmin }: HomePageClientProps) {
   const [heroData, setHeroData] = useState<HeroData>(initialData.hero);
   const [statsData, setStatsData] = useState<StatsData>(initialData.stats);
-  const [profesiData, setProfesiData] = useState<ProfesiSectionData>(
-    initialData.profesi
-  );
+  const [profesiData, setProfesiData] = useState<ProfesiSectionData>(initialData.profesi);
 
   const [isHeroModalOpen, setIsHeroModalOpen] = useState(false);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
@@ -39,7 +35,7 @@ export default function HomePageClient({ initialData, isAdmin }: HomePageClientP
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // HERO
+  // --- HERO ---
   const handleSaveHero = (newData: HeroData) => {
     setErrorMessage(null);
     startTransition(async () => {
@@ -53,34 +49,30 @@ export default function HomePageClient({ initialData, isAdmin }: HomePageClientP
     });
   };
 
-  // STATS
+  // --- STATS ---
   const handleSaveStats = (newData: StatsData) => {
     setErrorMessage(null);
     startTransition(async () => {
       const result = await updateStatsData(newData);
-      if (result.success) {
-        setStatsData(newData);
-        setIsStatsModalOpen(false);
-      } else {
+      if (result.success && result.data) {
+  setStatsData(result.data);
+  setIsStatsModalOpen(false);
+}
+ else {
         setErrorMessage(result.message || 'Gagal menyimpan data Statistik.');
       }
     });
   };
 
-const handleSaveProfesi = (items: ProfesiData[]) => {
-  setErrorMessage(null);
-
-  startTransition(async () => {
-    const result = await createProfesiSnapshot(items);
-
-    if (result.success) {
-      setProfesiData(result.profesi);
-    } else {
-      setErrorMessage(result.message || 'Gagal menyimpan data profesi.');
-    }
-  });
-};
-
+  // --- PROFESI ---
+  const handleSaveProfesi = (items: ProfesiData[]) => {
+    setErrorMessage(null);
+    startTransition(async () => {
+      const result = await createProfesiSnapshot(items);
+      if (result.success) setProfesiData(result.profesi);
+      else setErrorMessage(result.message || 'Gagal menyimpan data profesi.');
+    });
+  };
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
@@ -119,10 +111,7 @@ const handleSaveProfesi = (items: ProfesiData[]) => {
           onSaveProfesi={handleSaveProfesi}
         />
 
-        <BeritaSection
-          posts={initialData.posts}
-          isAdmin={isAdmin}
-        />
+        <BeritaSection posts={initialData.posts} isAdmin={isAdmin} />
       </div>
 
       {isHeroModalOpen && (

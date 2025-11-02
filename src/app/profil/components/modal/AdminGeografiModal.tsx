@@ -17,7 +17,16 @@ export default function AdminGeografiModal({
   onClose,
   onSave,
 }: AdminGeografiModalProps) {
-  const [formData, setFormData] = useState<GeoData>(initialData);
+  const [formData, setFormData] = useState<GeoData>({
+  ...initialData,
+  lintangUtara: initialData.lintangUtara ?? '',
+  bujurTimur: initialData.bujurTimur ?? '',
+  ketinggian: initialData.ketinggian ?? '',
+  topografi: initialData.topografi ?? '',
+  hidrologi: initialData.hidrologi ?? '',
+  klimatologi: initialData.klimatologi ?? '',
+});
+
 
   const handleChange = (field: keyof GeoData, value: string) => {
     setFormData((prev: GeoData) => ({
@@ -148,43 +157,111 @@ export default function AdminGeografiModal({
             </div>
           </div>
 
-          {/* Google Maps URL */}
-          <div>
-            <label className="block text-[12px] font-medium text-ink mb-1">
-              Tautan Google Maps
-            </label>
-            <input
-              type="url"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
-              value={formData.googleMapsUrl}
-              onChange={(e) => handleChange('googleMapsUrl', e.target.value)}
-              disabled={isLoading}
-              placeholder="https://maps.google.com/..."
-            />
-            <p className="mt-1 text-[11px] text-gray-500 leading-snug">
-              Tautan ini akan dipakai untuk tombol &quot;Buka di Google Maps&quot;.
-            </p>
+          {/* Additional fields for new data */}
+          <div className="space-y-4">
+            <div>
+              <label className="block text-[12px] font-medium text-ink mb-1">
+                Lintang Utara
+              </label>
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                value={formData.lintangUtara}
+                onChange={(e) => handleChange('lintangUtara', e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div>
+              <label className="block text-[12px] font-medium text-ink mb-1">
+                Bujur Timur
+              </label>
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                value={formData.bujurTimur}
+                onChange={(e) => handleChange('bujurTimur', e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div>
+              <label className="block text-[12px] font-medium text-ink mb-1">
+                Ketinggian (m dpl)
+              </label>
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                value={formData.ketinggian}
+                onChange={(e) => handleChange('ketinggian', e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div>
+              <label className="block text-[12px] font-medium text-ink mb-1">
+                Topografi
+              </label>
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                value={formData.topografi}
+                onChange={(e) => handleChange('topografi', e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div>
+              <label className="block text-[12px] font-medium text-ink mb-1">
+                Hidrologi
+              </label>
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                value={formData.hidrologi}
+                onChange={(e) => handleChange('hidrologi', e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
+
+            <div>
+              <label className="block text-[12px] font-medium text-ink mb-1">
+                Klimatologi
+              </label>
+              <input
+                type="text"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                value={formData.klimatologi}
+                onChange={(e) => handleChange('klimatologi', e.target.value)}
+                disabled={isLoading}
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="mt-6 flex justify-end gap-3">
-          <button
-            onClick={onClose}
-            disabled={isLoading}
-            className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 disabled:opacity-50"
-          >
-            Batal
-          </button>
+          {/* Footer */}
+          <div className="mt-6 flex justify-end gap-3">
+            <button
+              onClick={onClose}
+              disabled={isLoading}
+              className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 disabled:opacity-50"
+            >
+              Batal
+            </button>
 
-          <button
-            onClick={handleSave}
-            disabled={isLoading}
-            className="rounded-md bg-brand-primary/80 px-4 py-2 text-sm font-medium text-brand-dark ring-1 ring-brand-dark/20 hover:bg-brand-primary disabled:opacity-50"
-          >
-            {isLoading ? 'Menyimpan…' : 'Simpan Perubahan'}
-          </button>
+            <button
+              onClick={handleSave}
+              disabled={isLoading}
+              className="rounded-md bg-brand-primary/80 px-4 py-2 text-sm font-medium text-brand-dark ring-1 ring-brand-dark/20 hover:bg-brand-primary disabled:opacity-50"
+            >
+              {isLoading ? 'Menyimpan…' : 'Simpan Perubahan'}
+            </button>
+          </div>
         </div>
       </div>
     </div>

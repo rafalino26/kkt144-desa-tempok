@@ -10,59 +10,63 @@ export async function updateProfilGeografis(
   | { success: false; message: string }
 > {
   try {
-    // Asumsi cuma ada 1 row ProfilGeografis di desa ini.
-    // Kita ambil row pertama.
+    // Ambil baris pertama (karena cuma ada 1 profil desa)
     const current = await db.profilGeografis.findFirst();
 
+    // --- Data yang akan disimpan ---
+    const dataToSave = {
+      batasUtara: newData.batasUtara,
+      batasTimur: newData.batasTimur,
+      batasSelatan: newData.batasSelatan,
+      batasBarat: newData.batasBarat,
+      googleMapsUrl: newData.googleMapsUrl,
+      lintangUtara: newData.lintangUtara,
+      bujurTimur: newData.bujurTimur,
+      ketinggian: newData.ketinggian,
+      topografi: newData.topografi,
+      hidrologi: newData.hidrologi,
+      klimatologi: newData.klimatologi,
+    };
+
+    let updated;
+
     if (!current) {
-      // Kalau belum ada satupun row -> kita create baru
-      const created = await db.profilGeografis.create({
+      // kalau belum ada data sama sekali → buat baru
+      updated = await db.profilGeografis.create({
         data: {
-          deskripsiLokasi: newData.deskripsiLokasi,
-          batasUtara: newData.batasUtara,
-          batasTimur: newData.batasTimur,
-          batasSelatan: newData.batasSelatan,
-          batasBarat: newData.batasBarat,
-          googleMapsUrl: newData.googleMapsUrl,
+          ...dataToSave,
+          deskripsiLokasi:
+            newData.deskripsiLokasi ||
+            'Belum ada deskripsi lokasi yang diinputkan.',
         },
       });
-
-      return {
-        success: true,
+    } else {
+      // kalau sudah ada → update baris yang ada
+      updated = await db.profilGeografis.update({
+        where: { id: current.id },
         data: {
-          deskripsiLokasi: created.deskripsiLokasi,
-          batasUtara: created.batasUtara ?? '',
-          batasTimur: created.batasTimur ?? '',
-          batasSelatan: created.batasSelatan ?? '',
-          batasBarat: created.batasBarat ?? '',
-          googleMapsUrl: created.googleMapsUrl ?? '',
-          lastUpdated: created.updatedAt.toISOString(),
+          ...dataToSave,
+          deskripsiLokasi: newData.deskripsiLokasi,
         },
-      };
+      });
     }
 
-    // Kalau row sudah ada -> update row itu
-    const updated = await db.profilGeografis.update({
-      where: { id: current.id },
-      data: {
-        deskripsiLokasi: newData.deskripsiLokasi,
-        batasUtara: newData.batasUtara,
-        batasTimur: newData.batasTimur,
-        batasSelatan: newData.batasSelatan,
-        batasBarat: newData.batasBarat,
-        googleMapsUrl: newData.googleMapsUrl,
-      },
-    });
-
+    // --- Kembalikan hasil ke frontend ---
     return {
       success: true,
       data: {
-        deskripsiLokasi: updated.deskripsiLokasi,
+        deskripsiLokasi: updated.deskripsiLokasi ?? '',
         batasUtara: updated.batasUtara ?? '',
         batasTimur: updated.batasTimur ?? '',
         batasSelatan: updated.batasSelatan ?? '',
         batasBarat: updated.batasBarat ?? '',
         googleMapsUrl: updated.googleMapsUrl ?? '',
+        lintangUtara: updated.lintangUtara ?? '',
+        bujurTimur: updated.bujurTimur ?? '',
+        ketinggian: updated.ketinggian ?? '',
+        topografi: updated.topografi ?? '',
+        hidrologi: updated.hidrologi ?? '',
+        klimatologi: updated.klimatologi ?? '',
         lastUpdated: updated.updatedAt.toISOString(),
       },
     };

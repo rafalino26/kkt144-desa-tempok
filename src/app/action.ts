@@ -32,35 +32,109 @@ export async function updateHeroData(newData: HeroData) {
 export async function updateStatsData(newData: StatsData) {
   try {
     await verifyAdminSession();
-    const latestStat = await db.statistik.findFirst({ orderBy: { updatedAt: 'desc' } });
 
-    const dataToSave = {
-        jumlahPenduduk: newData.penduduk,
-        jumlahKK: newData.kk,
-        luasWilayah: newData.wilayah,
-        jumlahDusun: newData.dusun,
-    };
+    const current = await db.statistik.findFirst({
+      orderBy: { updatedAt: 'desc' },
+    });
 
+    if (!current) {
+      const created = await db.statistik.create({
+        data: {
+          jumlahPenduduk: newData.penduduk,
+          jumlahKK: newData.kk,
+          luasWilayah: newData.wilayah,
+          jumlahDusun: newData.dusun,
+        },
+      });
 
-    if (latestStat) {
-        await db.statistik.update({ 
-            where: { id: latestStat.id }, 
-            data: dataToSave 
-        });
-    } else {
-         await db.statistik.create({ 
-             data: dataToSave 
-         });
+      return {
+        success: true as const,
+        data: {
+          penduduk: created.jumlahPenduduk,
+          kk: created.jumlahKK,
+          wilayah: created.luasWilayah,
+          dusun: created.jumlahDusun,
+          lastUpdated: created.updatedAt.toISOString(),
+          lastUpdatedPenduduk: created.updatedPenduduk.toISOString(),
+          lastUpdatedKK: created.updatedKK.toISOString(),
+          lastUpdatedWilayah: created.updatedWilayah.toISOString(),
+          lastUpdatedDusun: created.updatedDusun.toISOString(),
+        } as StatsData,
+        message: 'Data Statistik berhasil dibuat.',
+      };
     }
 
+    // ✅ Hindari `any`: pakai tipe Partial dari Prisma UncheckedUpdateInput
+    type UpdatableKeys =
+      | 'jumlahPenduduk' | 'updatedPenduduk'
+      | 'jumlahKK'       | 'updatedKK'
+      | 'luasWilayah'    | 'updatedWilayah'
+      | 'jumlahDusun'    | 'updatedDusun';
+
+    const dataToUpdate: Partial<Pick<Prisma.StatistikUncheckedUpdateInput, UpdatableKeys>> = {};
+
+    if (newData.penduduk !== current.jumlahPenduduk) {
+      dataToUpdate.jumlahPenduduk = newData.penduduk;
+      dataToUpdate.updatedPenduduk = new Date();
+    }
+    if (newData.kk !== current.jumlahKK) {
+      dataToUpdate.jumlahKK = newData.kk;
+      dataToUpdate.updatedKK = new Date();
+    }
+    if (newData.wilayah !== current.luasWilayah) {
+      dataToUpdate.luasWilayah = newData.wilayah;
+      dataToUpdate.updatedWilayah = new Date();
+    }
+    if (newData.dusun !== current.jumlahDusun) {
+      dataToUpdate.jumlahDusun = newData.dusun;
+      dataToUpdate.updatedDusun = new Date();
+    }
+
+    if (Object.keys(dataToUpdate).length === 0) {
+      return {
+        success: true as const,
+        data: {
+          penduduk: current.jumlahPenduduk,
+          kk: current.jumlahKK,
+          wilayah: current.luasWilayah,
+          dusun: current.jumlahDusun,
+          lastUpdated: current.updatedAt.toISOString(),
+          lastUpdatedPenduduk: current.updatedPenduduk.toISOString(),
+          lastUpdatedKK: current.updatedKK.toISOString(),
+          lastUpdatedWilayah: current.updatedWilayah.toISOString(),
+          lastUpdatedDusun: current.updatedDusun.toISOString(),
+        } as StatsData,
+        message: 'Tidak ada perubahan data.',
+      };
+    }
+
+    const updated = await db.statistik.update({
+      where: { id: current.id },
+      data: dataToUpdate,
+    });
+
+    const data: StatsData = {
+      penduduk: updated.jumlahPenduduk,
+      kk: updated.jumlahKK,
+      wilayah: updated.luasWilayah,
+      dusun: updated.jumlahDusun,
+      lastUpdated: updated.updatedAt.toISOString(),
+      lastUpdatedPenduduk: updated.updatedPenduduk.toISOString(),
+      lastUpdatedKK: updated.updatedKK.toISOString(),
+      lastUpdatedWilayah: updated.updatedWilayah.toISOString(),
+      lastUpdatedDusun: updated.updatedDusun.toISOString(),
+    };
+
     revalidatePath('/');
-    return { success: true, message: 'Data Statistik berhasil diperbarui.' };
-  } catch (error) {
-    console.error("Error updating stats data:", error);
+    return { success: true as const, data, message: 'Data Statistik berhasil diperbarui.' };
+  } catch (error: unknown) { // ✅ no `any`
+    console.error('Error updating stats data:', error);
     const message = error instanceof Error ? error.message : 'Gagal memperbarui data Statistik.';
-    return { success: false, message: message };
+    return { success: false as const, message };
   }
 }
+
+
 
 export async function deletePost(postId: string) {
   try {

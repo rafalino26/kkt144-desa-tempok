@@ -127,9 +127,18 @@ model ProfilGeografis {
 
   googleMapsUrl   String?
 
+  // New fields
+  lintangUtara    String?
+  bujurTimur      String?
+  ketinggian      String?
+  topografi       String?
+  hidrologi       String?
+  klimatologi     String?
+
   updatedAt       DateTime @updatedAt
   createdAt       DateTime @default(now())
 }
+
 
 /* Struktur pemerintah desa (bisa banyak row) */
 model ProfilPerangkatDesa {
@@ -158,3 +167,18 @@ model ProfilSosialEkonomi {
   updatedAt                 DateTime @updatedAt
   createdAt                 DateTime @default(now())
 }
+
+/* =======================
+   PESAN KONTAK MASYARAKAT
+   ======================= */
+model PesanKontak {
+  id        String   @id @default(cuid())
+
+  nama      String
+  email     String
+  isiPesan  String   @db.Text
+
+  isDibaca  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+

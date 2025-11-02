@@ -26,7 +26,7 @@ export default function PotensiPertanianClient({ initialData }: Props) {
   </h2>
   <p className="mt-3 text-sm text-gray-600">
     Desa Tempok memiliki potensi besar di sektor pertanian, khususnya dalam tanaman hortikultura dan pangan. 
-    Tanaman-tanaman seperti kol, cabai dan tomat menjadi komoditas utama yang banyak dibudidayakan di sini.
+    Tanaman-tanaman seperti kubis, cabai dan tomat menjadi komoditas utama yang banyak dibudidayakan di sini.
   </p>
 </div>
       {/* Hero sawah tetap */}

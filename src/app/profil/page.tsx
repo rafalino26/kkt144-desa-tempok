@@ -15,31 +15,43 @@ export default async function ProfilDesaPage() {
 
    const geoRow = await db.profilGeografis.findFirst();
 
-  const geoInitialData = geoRow
-    ? {
-        deskripsiLokasi: geoRow.deskripsiLokasi,
-        batasUtara: geoRow.batasUtara ?? '',
-        batasTimur: geoRow.batasTimur ?? '',
-        batasSelatan: geoRow.batasSelatan ?? '',
-        batasBarat: geoRow.batasBarat ?? '',
-        googleMapsUrl: geoRow.googleMapsUrl ?? '',
-        lastUpdated: geoRow.updatedAt
-          ? geoRow.updatedAt.toISOString()
-          : null,
-      }
-    : {
-        deskripsiLokasi:
-`Desa Tempok terletak di Kecamatan Tompaso, Kabupaten Minahasa.
+const geoInitialData = geoRow
+  ? {
+      deskripsiLokasi: geoRow.deskripsiLokasi ?? '',
+      batasUtara: geoRow.batasUtara ?? '',
+      batasTimur: geoRow.batasTimur ?? '',
+      batasSelatan: geoRow.batasSelatan ?? '',
+      batasBarat: geoRow.batasBarat ?? '',
+      googleMapsUrl: geoRow.googleMapsUrl ?? '',
+      lintangUtara: geoRow.lintangUtara ?? '',
+      bujurTimur: geoRow.bujurTimur ?? '',
+      ketinggian: geoRow.ketinggian ?? '',
+      topografi: geoRow.topografi ?? '',
+      hidrologi: geoRow.hidrologi ?? '',
+      klimatologi: geoRow.klimatologi ?? '',
+      lastUpdated: geoRow.updatedAt
+        ? geoRow.updatedAt.toISOString()
+        : null,
+    }
+  : {
+      deskripsiLokasi: `Desa Tempok terletak di Kecamatan Tompaso, Kabupaten Minahasa.
 Wilayah desa berada di kawasan dataran tinggi Minahasa
 dengan lahan pertanian dan permukiman warga.
 Perkiraan ketinggian: > 600 mdpl (akan dikonfirmasi).`,
-        batasUtara: "(belum diisi)",
-        batasTimur: "(belum diisi)",
-        batasSelatan: "(belum diisi)",
-        batasBarat: "(belum diisi)",
-        googleMapsUrl: "",
-        lastUpdated: null,
-      };
+      batasUtara: '(belum diisi)',
+      batasTimur: '(belum diisi)',
+      batasSelatan: '(belum diisi)',
+      batasBarat: '(belum diisi)',
+      googleMapsUrl: '',
+      lintangUtara: '(belum diisi)',
+      bujurTimur: '(belum diisi)',
+      ketinggian: '(belum diisi)',
+      topografi: '(belum diisi)',
+      hidrologi: '(belum diisi)',
+      klimatologi: '(belum diisi)',
+      lastUpdated: null,
+    };
+
 
   const identRow = await db.profilIdentitas.findFirst();
   const identInitialData = identRow
