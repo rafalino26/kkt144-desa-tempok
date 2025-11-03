@@ -16,6 +16,12 @@ interface SidebarProps {
 export default function Sidebar({ navItems, isOpen, onClose, session }: SidebarProps) {
   const isAdmin = !!session?.user;
 
+  // ✅ Tambahkan menu baru di sini juga
+  const fullNav = [
+    ...navItems,
+    { label: 'Tentang KKT-144', href: '/kkt-144' },
+  ];
+
   return (
     <>
       <div
@@ -37,7 +43,7 @@ export default function Sidebar({ navItems, isOpen, onClose, session }: SidebarP
         </div>
 
         <nav className="flex grow flex-col space-y-4">
-          {navItems.map((item) => (
+          {fullNav.map((item) => (
             <Link
               key={item.label}
               href={item.href}

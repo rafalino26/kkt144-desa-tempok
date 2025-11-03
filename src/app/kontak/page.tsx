@@ -3,7 +3,8 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
 import KontakClient from './components/KontakClient';
 import AdminInboxClient from './components/AdminInboxClient';
-import { getPesanKontak } from './actions/kontakAction';
+import AdminEditKontakClient from './components/AdminEditKontakClient';
+import { getPesanKontak, getInformasiKontak } from './actions/kontakAction';
 import type { PesanKontak as PrismaPesanKontak } from '@prisma/client';
 
 export const metadata = {
@@ -14,17 +15,31 @@ export const metadata = {
 export default async function KontakDesaPage() {
   const session = await getServerSession(authOptions);
   const isAdmin = !!session?.user;
-  const pesanResult = isAdmin ? await getPesanKontak() : null;
 
-  const info = {
-    alamat:
-      'Jl. Raya Tempok No. 1, Desa Tempok, Kec. Tompaso, Kab. Minahasa, Sulawesi Utara, 95693',
-    telepon: '+62 812-3456-7890',
-    email: 'desatempok@gmail.com',
-    jam: 'Senin – Jumat, 08.00 – 15.00 WITA',
-    facebook: '#',
-    instagram: '#',
-  };
+  const [pesanResult, infoResult] = await Promise.all([
+    isAdmin ? getPesanKontak() : Promise.resolve(null),
+    getInformasiKontak(),
+  ]);
+
+  // fallback bila load info gagal
+  const info = infoResult?.success
+    ? {
+        alamat: infoResult.data.alamat,
+        telepon: infoResult.data.telepon,
+        email: infoResult.data.email,
+        jam: infoResult.data.jam,
+        facebook: infoResult.data.facebook ?? '#',
+        instagram: infoResult.data.instagram ?? '#',
+      }
+    : {
+        alamat:
+          'Jl. Raya Tempok No. 1, Desa Tempok, Kec. Tompaso, Kab. Minahasa, Sulawesi Utara, 95693',
+        telepon: '+62 812-3456-7890',
+        email: 'desatempok@gmail.com',
+        jam: 'Senin – Jumat, 08.00 – 15.00 WITA',
+        facebook: '#',
+        instagram: '#',
+      };
 
   return (
     <main>
@@ -45,9 +60,24 @@ export default async function KontakDesaPage() {
 
         {/* ISI */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* Kolom kiri: info umum */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-semibold text-ink">Informasi Umum</h2>
+          {/* Kolom kiri: info umum + tombol edit (admin) */}
+          <div className="space-y-4">
+            <div className="flex items-start justify-between">
+              <h2 className="text-2xl font-semibold text-ink">Informasi Umum</h2>
+              {isAdmin && (
+                <AdminEditKontakClient
+                  initialInfo={{
+                    alamat: info.alamat,
+                    telepon: info.telepon,
+                    email: info.email,
+                    jam: info.jam,
+                    facebook: info.facebook,
+                    instagram: info.instagram,
+                  }}
+                />
+              )}
+            </div>
+
             <ul className="space-y-4 text-sm text-gray-700">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-brand-dark mt-0.5" />
@@ -68,10 +98,16 @@ export default async function KontakDesaPage() {
             </ul>
 
             <div className="flex gap-4 pt-2">
-              <a href={info.facebook} className="text-gray-600 hover:text-brand-dark flex items-center gap-1">
+              <a
+                href={info.facebook}
+                className="text-gray-600 hover:text-brand-dark flex items-center gap-1"
+              >
                 <Facebook size={18} /> Facebook
               </a>
-              <a href={info.instagram} className="text-gray-600 hover:text-brand-dark flex items-center gap-1">
+              <a
+                href={info.instagram}
+                className="text-gray-600 hover:text-brand-dark flex items-center gap-1"
+              >
                 <Instagram size={18} /> Instagram
               </a>
             </div>
@@ -80,14 +116,16 @@ export default async function KontakDesaPage() {
           {/* Kolom kanan: tergantung role */}
           {isAdmin ? (
             <AdminInboxClient
-              initialData={(pesanResult?.data ?? []).map((p: PrismaPesanKontak) => ({
-                id: p.id,
-                nama: p.nama,
-                email: p.email,
-                isiPesan: p.isiPesan,
-                isDibaca: p.isDibaca,
-                createdAt: p.createdAt.toISOString(),
-              }))}
+              initialData={(pesanResult?.success ? pesanResult.data : []).map(
+                (p: PrismaPesanKontak) => ({
+                  id: p.id,
+                  nama: p.nama,
+                  email: p.email,
+                  isiPesan: p.isiPesan,
+                  isDibaca: p.isDibaca,
+                  createdAt: p.createdAt.toISOString(),
+                })
+              )}
             />
           ) : (
             <KontakClient />

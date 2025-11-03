@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, LogIn, LogOut } from 'lucide-react';
-
+import type { Session } from 'next-auth';
 import LoginModal from '../ui/LoginModal';
 import ConfirmLogoutModal from '../ui/ConfirmLogoutModal';
 
@@ -29,13 +29,18 @@ export default function Header({ navItems, onMenuClick, session }: HeaderProps) 
 
   // Normalisasi trailing slash
   const normalize = (p: string) => (p.endsWith('/') && p !== '/' ? p.slice(0, -1) : p);
-
   const isActive = (href: string) => {
     const cur = normalize(pathname);
     const target = normalize(href);
     if (target === '/') return cur === '/';
     return cur === target || cur.startsWith(`${target}/`);
   };
+
+  // ✅ Tambahkan menu baru di sini
+  const fullNav = [
+    ...navItems,
+    { label: 'Tentang KKT-144', href: '/kkt-144' },
+  ];
 
   return (
     <>
@@ -53,7 +58,7 @@ export default function Header({ navItems, onMenuClick, session }: HeaderProps) 
 
           {/* --- Tengah: Navigasi --- */}
           <nav className="hidden items-center space-x-6 md:flex">
-            {navItems.map((item) => {
+            {fullNav.map((item) => {
               const active = isActive(item.href);
               return (
                 <Link

@@ -182,3 +182,19 @@ model PesanKontak {
   createdAt DateTime @default(now())
 }
 
+/* =======================
+   INFORMASI KONTAK DESA
+   ======================= */
+model InformasiKontak {
+  id        String   @id @default(cuid())
+
+  alamat    String   @db.Text
+  telepon   String
+  email     String
+  jam       String
+  facebook  String?
+  instagram String?
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
