@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import 'leaflet/dist/leaflet.css';
-import AppShell from './components/layout/AppShell';
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import ClientLayout from './components/layout/ClientLayout';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,9 +23,9 @@ export default async function RootLayout({
   return (
     <html lang="id">
       <body className={inter.className}>
-        <AppShell session={session}>
+        <ClientLayout session={session}>
           {children}
-        </AppShell>
+        </ClientLayout>
       </body>
     </html>
   );
