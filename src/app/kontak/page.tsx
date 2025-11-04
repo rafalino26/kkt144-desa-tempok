@@ -42,15 +42,19 @@ export default async function KontakDesaPage() {
       };
 
   return (
-    <main>
+    <main className="min-h-screen bg-muted dark:bg-elev text-ink dark:text-ink">
       <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-12">
-        {/* HEADER */}
-        <section className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-brand-primary/70 via-brand-light/60 to-brand-primary/70 border border-black/5 shadow-sm p-8 md:p-10 text-brand-dark">
+        {/* HEADER / HERO */}
+        <section
+          className="relative rounded-2xl overflow-hidden
+                     bg-brand-primary text-black
+                     border border-black/5 shadow-sm p-8 md:p-10"
+        >
           <div className="max-w-2xl">
             <h1 className="text-3xl sm:text-4xl font-semibold">
               {isAdmin ? 'Kotak Masuk Pesan' : 'Kontak Desa Tempok'}
             </h1>
-            <p className="mt-2 text-sm sm:text-base leading-relaxed text-brand-dark/90">
+            <p className="mt-2 text-sm sm:text-base leading-relaxed opacity-90">
               {isAdmin
                 ? 'Pesan dari warga dan pengunjung akan muncul di sini.'
                 : 'Hubungi pemerintah desa untuk informasi, pelayanan, atau kerja sama.'}
@@ -63,7 +67,9 @@ export default async function KontakDesaPage() {
           {/* Kolom kiri: info umum + tombol edit (admin) */}
           <div className="space-y-4">
             <div className="flex items-start justify-between">
-              <h2 className="text-2xl font-semibold text-ink">Informasi Umum</h2>
+              <h2 className="text-2xl font-semibold text-ink dark:text-ink">
+                Informasi Umum
+              </h2>
               {isAdmin && (
                 <AdminEditKontakClient
                   initialInfo={{
@@ -78,7 +84,7 @@ export default async function KontakDesaPage() {
               )}
             </div>
 
-            <ul className="space-y-4 text-sm text-gray-700">
+            <ul className="space-y-4 text-sm text-gray-700 dark:text-ink/90">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-brand-dark mt-0.5" />
                 <span>{info.alamat}</span>
@@ -100,13 +106,13 @@ export default async function KontakDesaPage() {
             <div className="flex gap-4 pt-2">
               <a
                 href={info.facebook}
-                className="text-gray-600 hover:text-brand-dark flex items-center gap-1"
+                className="text-gray-600 dark:text-ink/80 hover:text-brand-dark dark:hover:text-white flex items-center gap-1"
               >
                 <Facebook size={18} /> Facebook
               </a>
               <a
                 href={info.instagram}
-                className="text-gray-600 hover:text-brand-dark flex items-center gap-1"
+                className="text-gray-600 dark:text-ink/80 hover:text-brand-dark dark:hover:text-white flex items-center gap-1"
               >
                 <Instagram size={18} /> Instagram
               </a>

@@ -25,33 +25,54 @@ export default function StatsCard({
 
   return (
     <div
-      className="group rounded-xl bg-white p-5 shadow-sm
-                 transition-all duration-300 ease-in-out
-                 hover:bg-gradient-to-br from-brand-primary/80 via-brand-light/70 to-brand-primary/80
-                 hover:shadow-lg"
+      className="
+        group rounded-xl p-5 shadow-sm
+        bg-elev border border-border
+        transition-all duration-200
+        hover:bg-brand-primary hover:shadow-lg
+      "
     >
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-ink/70 transition-colors duration-300 group-hover:text-brand-dark/90">
+        <span
+          className="
+            text-sm font-medium text-ink/70
+            transition-colors duration-200 group-hover:text-brand-dark
+          "
+        >
           {label}
         </span>
+
         <Icon
           size={20}
-          className="text-brand-primary transition-colors duration-300 group-hover:text-brand-dark"
+          className="
+            text-brand-primary
+            transition-colors duration-200 group-hover:text-brand-dark
+          "
         />
       </div>
 
-      <p className="mt-2 text-3xl font-bold text-ink transition-colors duration-300 group-hover:text-brand-dark">
+      <p
+        className="
+          mt-2 text-3xl font-bold text-ink
+          transition-colors duration-200 group-hover:text-brand-dark
+        "
+      >
         {value}{' '}
         {unit && (
-          <span className="text-base font-normal">
+          <span className="text-base font-normal text-ink/80 group-hover:text-brand-dark/90">
             {unit}
           </span>
         )}
       </p>
 
       {formattedUpdatedAt && (
-        <p className="mt-2 text-[11px] leading-tight text-gray-500 transition-colors duration-300 group-hover:text-brand-dark/80">
-          <span className="font-medium text-gray-600 group-hover:text-brand-dark">
+        <p
+          className="
+            mt-2 text-[11px] leading-tight
+            text-ink/70 transition-colors duration-200 group-hover:text-brand-dark/80
+          "
+        >
+          <span className="font-medium text-ink/80 group-hover:text-brand-dark">
             {formattedUpdatedAt}
           </span>
         </p>

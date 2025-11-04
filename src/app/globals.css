@@ -1,21 +1,58 @@
+/* globals.css */
 @import "tailwindcss";
 
-@theme {
-  --color-brand-primary: #b3d43d;
-  --color-brand-light:   #e0f687;
-  --color-brand-dark:    #5e644f;
+/* ======  Runtime color variables (light + dark)  ====== */
+:root {
+  color-scheme: light;
+  --brand-primary: #b3d43d;
+  --brand-light:   #e0f687;
+  --brand-dark:    #5e644f;
 
-  --color-surface: #f7f9fd;
-  --color-ink:     #171717; 
+  /* surfaces & text */
+  --surface: #f7f9fd;   /* page background */
+  --ink:     #171717;   /* main text */
+
+  /* optional neutrals for components */
+  --elev:    #ffffff;   /* elevated surfaces: cards/header */
+  --muted:   #eef2f6;   /* subtle bg (sections) */
+  --border:  #e5e7eb;   /* borders/dividers */
 }
 
-body { @apply bg-surface text-ink; }
+.dark {
+  color-scheme: dark;
+  --surface: #0b0f17;
+  --ink:     #e8eaee;
 
+  --elev:    #111827;
+  --muted:   #0f1623;
+  --border:  #1f2937;
+}
+
+/* ======  Map Tailwind tokens -> CSS variables  ====== */
+/* Dengan begini, class Tailwind seperti bg-surface, text-ink, dsb akan ikut berubah saat .dark dipasang di <html> */
+@theme {
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-light:   var(--brand-light);
+  --color-brand-dark:    var(--brand-dark);
+
+  --color-surface: var(--surface);
+  --color-ink:     var(--ink);
+
+  --color-elev:    var(--elev);
+  --color-muted:   var(--muted);
+  --color-border:  var(--border);
+}
+
+/* ======  Base  ====== */
+html, body { height: 100%; }
+body { @apply bg-surface text-ink antialiased; }
+
+/* Smooth theme transition (tidak terlalu agresif biar hemat) */
+* { transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+
+/* ======  Tiny animation util  ====== */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1); }
 }
-.animate-fadeIn {
-  animation: fadeIn 0.25s ease-out forwards;
-}
-
+.animate-fadeIn { animation: fadeIn .25s ease-out forwards; }

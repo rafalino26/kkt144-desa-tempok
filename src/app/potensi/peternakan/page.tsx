@@ -1,4 +1,4 @@
-// src/app/potensi/peternakan/page.tsx
+
 import Image from "next/image";
 import PotensiTabsClient from "../components/PotensiTabsClient";
 
@@ -12,14 +12,11 @@ type PetItem = {
   desc: string;
   src: string;
   alt: string;
-  /** opsional: kelas tambahan untuk <figure> (misal tinggi/rasio/custom border) */
   figureClass?: string;
-  /** opsional: kelas tambahan untuk <Image> (misal object-position/custom crop) */
   imageClass?: string;
 };
 
 export default function PotensiPeternakanPage() {
-  // Kamu bisa atur per-item class di sini
   const items: PetItem[] = [
     {
       nama: "Sapi",
@@ -27,8 +24,8 @@ export default function PotensiPeternakanPage() {
         "Sapi dimanfaatkan untuk daging, susu, dan menunjang aktivitas pertanian. Populasinya tersebar di beberapa kandang milik warga.",
       src: "/sapi.jpeg",
       alt: "Peternakan sapi Desa Tempok",
-      figureClass: "h-56 md:h-72", // contoh: tinggi container
-      imageClass: "object-cover object-[center_90%]", // contoh: fokus agak ke bawah
+      figureClass: "h-56 md:h-72",
+      imageClass: "object-cover object-[center_90%]",
     },
     {
       nama: "Bebek",
@@ -44,22 +41,22 @@ export default function PotensiPeternakanPage() {
   return (
     <main>
       <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-10">
-        {/* Tabs (dipusatkan oleh komponen sebelumnya) */}
+        {/* Tabs */}
         <PotensiTabsClient />
 
         {/* Intro */}
         <section className="space-y-6 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl font-semibold text-ink">
+          <h2 className="text-3xl font-semibold text-ink dark:text-ink">
             Potensi Peternakan Desa Tempok
           </h2>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm text-gray-600 leading-relaxed dark:text-ink/70">
             Selain pertanian, Desa Tempok juga memiliki potensi di sektor
-            peternakan—terutama sapi dan bebek—yang mendukung ekonomi rumah
+            peternakan — terutama sapi dan bebek — yang mendukung ekonomi rumah
             tangga warga.
           </p>
         </section>
 
-        {/* Alternating grid: 1 item per baris, silang kiri/kanan di layar md+ */}
+        {/* Alternating grid */}
         <section className="space-y-12">
           {items.map((item, idx) => {
             const imgOrder = idx % 2 === 0 ? "md:order-1" : "md:order-2";
@@ -72,7 +69,7 @@ export default function PotensiPeternakanPage() {
               >
                 {/* Kolom Gambar */}
                 <figure
-                  className={`relative rounded-xl overflow-hidden border border-black/5 shadow-sm ${item.figureClass ?? "h-56 md:h-72"} ${imgOrder}`}
+                  className={`relative rounded-xl overflow-hidden border border-black/5 dark:border-white/10 shadow-sm ${item.figureClass ?? "h-56 md:h-72"} ${imgOrder}`}
                 >
                   <Image
                     src={item.src}
@@ -88,10 +85,10 @@ export default function PotensiPeternakanPage() {
                 <div
                   className={`flex flex-col justify-center text-center md:text-left ${textOrder}`}
                 >
-                  <h3 className="text-2xl font-semibold text-ink">
+                  <h3 className="text-2xl font-semibold text-ink dark:text-ink">
                     {item.nama}
                   </h3>
-                  <p className="mt-3 text-sm text-gray-700 leading-relaxed">
+                  <p className="mt-3 text-sm text-gray-700 leading-relaxed dark:text-ink/70">
                     {item.desc}
                   </p>
                 </div>

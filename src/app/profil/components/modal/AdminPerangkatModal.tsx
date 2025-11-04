@@ -25,7 +25,6 @@ export default function AdminPerangkatModal({
 
   const [nama, setNama] = useState(initialData?.nama ?? '');
   const [jabatan, setJabatan] = useState(initialData?.jabatan ?? '');
-
   const [urutanInput, setUrutanInput] = useState(
     initialData?.urutan ? String(initialData.urutan) : ''
   );
@@ -59,20 +58,21 @@ export default function AdminPerangkatModal({
 
   return (
     <div
-      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 dark:bg-black/70"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-2xl"
+        className="relative w-full max-w-md rounded-xl bg-white p-6 shadow-2xl 
+                   dark:bg-elev dark:border dark:border-border dark:text-ink transition-colors duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-ink">
+            <h3 className="text-lg font-semibold text-ink dark:text-ink">
               {isEdit ? 'Edit Perangkat Desa' : 'Tambah Perangkat Desa'}
             </h3>
-            <p className="text-[12px] text-gray-500 leading-relaxed">
+            <p className="text-[12px] text-gray-500 leading-relaxed dark:text-ink/70">
               Isi nama dan jabatan perangkat desa.
             </p>
           </div>
@@ -80,7 +80,8 @@ export default function AdminPerangkatModal({
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="rounded-full p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
+            className="rounded-full p-1.5 text-gray-500 hover:bg-gray-100 
+                       dark:text-ink/70 dark:hover:bg-white/10 disabled:opacity-50"
             aria-label="Tutup"
           >
             <X size={18} />
@@ -91,12 +92,13 @@ export default function AdminPerangkatModal({
         <div className="max-h-[60vh] overflow-y-auto pr-2 space-y-4 text-sm">
           {/* NAMA */}
           <div>
-            <label className="block text-[12px] font-medium text-ink mb-1">
+            <label className="block text-[12px] font-medium text-ink mb-1 dark:text-ink">
               Nama
             </label>
             <input
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                         dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
               value={nama}
               onChange={(e) => setNama(e.target.value)}
               disabled={isLoading}
@@ -106,12 +108,13 @@ export default function AdminPerangkatModal({
 
           {/* JABATAN */}
           <div>
-            <label className="block text-[12px] font-medium text-ink mb-1">
+            <label className="block text-[12px] font-medium text-ink mb-1 dark:text-ink">
               Jabatan
             </label>
             <input
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                         dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
               value={jabatan}
               onChange={(e) => setJabatan(e.target.value)}
               disabled={isLoading}
@@ -121,7 +124,7 @@ export default function AdminPerangkatModal({
 
           {/* URUTAN */}
           <div>
-            <label className="block text-[12px] font-medium text-ink mb-1">
+            <label className="block text-[12px] font-medium text-ink mb-1 dark:text-ink">
               Urutan Tampil
             </label>
             <input
@@ -129,13 +132,14 @@ export default function AdminPerangkatModal({
               inputMode="numeric"
               pattern="[0-9]*"
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                         dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
               value={urutanInput}
               onChange={handleUrutanChange}
               disabled={isLoading}
               placeholder="1"
             />
-            <p className="mt-1 text-[11px] text-gray-500 leading-snug">
+            <p className="mt-1 text-[11px] text-gray-500 leading-snug dark:text-ink/70">
               Angka lebih kecil akan muncul lebih dulu di daftar.
             </p>
           </div>
@@ -147,7 +151,10 @@ export default function AdminPerangkatModal({
             <button
               onClick={() => onDelete(initialData.id)}
               disabled={isLoading}
-              className="inline-flex items-center gap-1 rounded-md bg-red-100 px-3 py-2 text-[12px] font-medium text-red-700 ring-1 ring-red-300 hover:bg-red-200 disabled:opacity-50"
+              className="inline-flex items-center gap-1 rounded-md bg-red-100 px-3 py-2 
+                         text-[12px] font-medium text-red-700 ring-1 ring-red-300 hover:bg-red-200 
+                         dark:bg-red-900/40 dark:text-red-300 dark:ring-red-800 dark:hover:bg-red-900/60
+                         disabled:opacity-50"
             >
               <Trash2 size={14} />
               Hapus
@@ -158,7 +165,9 @@ export default function AdminPerangkatModal({
             <button
               onClick={onClose}
               disabled={isLoading}
-              className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 disabled:opacity-50"
+              className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 
+                         hover:bg-gray-200 disabled:opacity-50
+                         dark:bg-elev/60 dark:text-ink dark:hover:bg-elev/80"
             >
               Batal
             </button>
@@ -166,9 +175,14 @@ export default function AdminPerangkatModal({
             <button
               onClick={handleSubmit}
               disabled={isLoading}
-              className="rounded-md bg-brand-primary/80 px-4 py-2 text-sm font-medium text-brand-dark ring-1 ring-brand-dark/20 hover:bg-brand-primary disabled:opacity-50"
+              className="rounded-md bg-brand-primary/80 px-4 py-2 text-sm font-medium text-brand-dark 
+                         ring-1 ring-brand-dark/20 hover:bg-brand-primary disabled:opacity-50"
             >
-              {isLoading ? 'Menyimpan…' : isEdit ? 'Simpan Perubahan' : 'Tambah'}
+              {isLoading
+                ? 'Menyimpan…'
+                : isEdit
+                ? 'Simpan Perubahan'
+                : 'Tambah'}
             </button>
           </div>
         </div>

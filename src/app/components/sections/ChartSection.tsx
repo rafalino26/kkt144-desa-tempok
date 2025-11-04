@@ -18,7 +18,7 @@ const MapComponentWithNoSSR = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full items-center justify-center text-gray-500">
+      <div className="flex h-full items-center justify-center text-gray-500 dark:text-ink/70">
         Memuat peta...
       </div>
     ),
@@ -35,12 +35,12 @@ const PALETTE_LENGKAP = [
 function ProfesiPieChart3D({ data, colors }: { data: ProfesiData[]; colors: string[] }) {
   const chartRef = useRef<HTMLDivElement>(null);
 
-  const drawChart = () => {
+  const drawChart = React.useCallback(() => {
     if (!chartRef.current || !window.google || !window.google.visualization) return;
 
     if (data.length === 0) {
       chartRef.current.innerHTML =
-        '<div class="text-gray-500 text-sm">Tidak ada data.</div>';
+        '<div class="text-gray-500 dark:text-ink/70 text-sm">Tidak ada data.</div>';
       return;
     }
 
@@ -49,25 +49,32 @@ function ProfesiPieChart3D({ data, colors }: { data: ProfesiData[]; colors: stri
       ...data.map((item) => [item.name, item.value]),
     ]);
 
+    // Detect dark mode via <html>.dark
+    const isDark =
+      typeof document !== 'undefined' &&
+      document.documentElement.classList.contains('dark');
+
+    const legendColor = isDark ? '#E8EAEE' : '#171717';
+    const titleColor  = isDark ? '#E8EAEE' : '#171717';
+
     const options = {
       is3D: true,
       backgroundColor: 'transparent',
-      legend: { position: 'bottom', maxLines: 3 },
+      legend: { position: 'bottom', maxLines: 3, textStyle: { color: legendColor, fontSize: 12 } },
+      titleTextStyle: { color: titleColor, fontSize: 16, bold: false },
       chartArea: { left: '5%', top: '10%', width: '90%', height: '70%' },
       colors,
       fontName: 'Inter',
-      titleTextStyle: { fontSize: 16, bold: false },
-      legendTextStyle: { fontSize: 12 },
     };
 
     const chart = new window.google.visualization.PieChart(chartRef.current);
     chart.draw(dataTable, options);
-  };
+  }, [data, colors]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const ensureAndDraw = () => {
+    const loadAndDraw = () => {
       if (window.google?.charts) {
         window.google.charts.load('current', { packages: ['corechart'] });
         window.google.charts.setOnLoadCallback(drawChart);
@@ -83,17 +90,25 @@ function ProfesiPieChart3D({ data, colors }: { data: ProfesiData[]; colors: stri
       }
     };
 
-    ensureAndDraw();
+    loadAndDraw();
     drawChart();
 
     const handleResize = () => drawChart();
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, colors]);
+
+    // redraw when <html> class changes (dark ↔ light)
+    const observer = new MutationObserver(drawChart);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      observer.disconnect();
+    };
+  }, [drawChart]);
 
   return <div ref={chartRef} style={{ width: '100%', height: '100%' }} />;
 }
+
 
 interface ChartSectionProps {
   isAdmin: boolean;
@@ -103,7 +118,6 @@ interface ChartSectionProps {
 
 export default function ChartSection({ isAdmin, profesiData, onSaveProfesi }: ChartSectionProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const { items, lastUpdated } = profesiData;
 
   const chartColors = items.map(
@@ -125,30 +139,37 @@ export default function ChartSection({ isAdmin, profesiData, onSaveProfesi }: Ch
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      {/* --- Grafik Profesi --- */}
       <div className="relative">
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h2 className="text-2xl font-semibold text-ink">
-              Grafik Profesi Penduduk
-            </h2>
+            <h2 className="text-2xl font-semibold text-ink">Grafik Profesi Penduduk</h2>
           </div>
 
           {isAdmin && (
             <button
               onClick={() => setIsModalOpen(true)}
-             className="inline-flex items-center gap-1.5 self-start rounded-full
-             bg-brand-light/70 px-3 py-1 text-xs font-medium text-brand-dark
-             ring-1 ring-brand-dark/10
-             hover:bg-brand-light hover:shadow-sm
-             transition-colors"
->
+              className="
+                inline-flex items-center gap-1.5 self-start rounded-full
+                bg-brand-primary/90 px-3 py-1 text-xs font-medium text-brand-dark
+                ring-1 ring-brand-dark/10
+                hover:bg-brand-light hover:shadow-sm
+                transition-colors
+              "
+            >
               <Edit size={12} />
               Edit Data
             </button>
           )}
         </div>
 
-        <div className="rounded-xl bg-white p-6 shadow-sm min-h-[400px] flex flex-col overflow-hidden">
+        <div
+          className="
+            rounded-xl bg-white dark:bg-elev
+            p-6 shadow-sm min-h-[400px] flex flex-col overflow-hidden
+            border border-gray-100 dark:border-border
+          "
+        >
           <div className="flex-1 flex items-center justify-center overflow-hidden">
             <div style={{ width: '100%', height: '320px' }}>
               <ProfesiPieChart3D data={items} colors={chartColors} />
@@ -156,12 +177,12 @@ export default function ChartSection({ isAdmin, profesiData, onSaveProfesi }: Ch
           </div>
 
           {formattedUpdatedAt && (
-            <div className="mt-6 border-t border-gray-100 pt-4 text-center">
-              <p className="text-[11px] leading-tight text-gray-500">
-                <span className="block text-[10px] uppercase tracking-wide text-gray-400">
+            <div className="mt-6 border-t border-gray-100 dark:border-border pt-4 text-center">
+              <p className="text-[11px] leading-tight text-gray-500 dark:text-ink/70">
+                <span className="block text-[10px] uppercase tracking-wide text-gray-400 dark:text-ink/60">
                   Terakhir diperbarui
                 </span>
-                <span className="font-medium text-gray-600">
+                <span className="font-medium text-gray-600 dark:text-ink/80">
                   {formattedUpdatedAt}
                 </span>
               </p>
@@ -170,12 +191,16 @@ export default function ChartSection({ isAdmin, profesiData, onSaveProfesi }: Ch
         </div>
       </div>
 
+      {/* --- Map --- */}
       <div className="relative z-10">
-        <h2 className="mb-4 text-2xl font-semibold text-ink">
-          Lokasi Desa
-        </h2>
+        <h2 className="mb-4 text-2xl font-semibold text-ink">Lokasi Desa</h2>
 
-        <div className="rounded-xl bg-white shadow-sm h-[400px] p-3">
+        <div
+          className="
+            rounded-xl bg-white dark:bg-elev shadow-sm h-[400px] p-3
+            border border-gray-100 dark:border-border
+          "
+        >
           <div className="h-full w-full overflow-hidden rounded-lg">
             <MapComponentWithNoSSR />
           </div>

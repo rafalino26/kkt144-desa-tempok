@@ -1,4 +1,3 @@
-// src/app/kkt-144/page.tsx
 import Image from "next/image";
 
 export const metadata = {
@@ -12,36 +11,35 @@ export default function KKT144Page() {
       <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-10">
         {/* JUDUL & DESKRIPSI */}
         <section className="space-y-6 text-center max-w-3xl mx-auto">
-  <h2 className="text-3xl sm:text-4xl font-semibold text-ink">
-    KKT-144 Universitas Sam Ratulangi, Posko Tempok
-  </h2>
+          <h2 className="text-3xl sm:text-4xl font-semibold text-gray-800 dark:text-ink">
+            KKT-144 Universitas Sam Ratulangi, Posko Tempok
+          </h2>
 
-  {/* Instagram section */}
-  <div className="flex items-center justify-center gap-2 text-gray-700">
-    <a
-      href="https://www.instagram.com/kkt144_tempok?igsh=dWVtaXZvZzJ5amNq"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center gap-1 hover:text-brand-primary transition-colors"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="currentColor"
-        className="w-5 h-5"
-      >
-        <path d="M7.75 2C4.574 2 2 4.574 2 7.75v8.5C2 19.426 4.574 22 7.75 22h8.5C19.426 22 22 19.426 22 16.25v-8.5C22 4.574 19.426 2 16.25 2h-8.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm5.25-.25a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
-      </svg>
-      <span className="font-medium">@kkt144_tempok</span>
-    </a>
-  </div>
-</section>
-
+          {/* Instagram section */}
+          <div className="flex items-center justify-center gap-2 text-ink dark:text-ink">
+            <a
+              href="https://www.instagram.com/kkt144_tempok?igsh=dWVtaXZvZzJ5amNq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 hover:text-brand-primary dark:hover:text-brand-primary transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-5 h-5"
+              >
+                <path d="M7.75 2C4.574 2 2 4.574 2 7.75v8.5C2 19.426 4.574 22 7.75 22h8.5C19.426 22 22 19.426 22 16.25v-8.5C22 4.574 19.426 2 16.25 2h-8.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zm5.25-.25a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+              </svg>
+              <span className="font-medium">@kkt144_tempok</span>
+            </a>
+          </div>
+        </section>
 
         {/* FOTO LANDSCAPE UTAMA */}
         <section>
           <figure className="space-y-3">
-            <div className="relative h-[300px] sm:h-[600px] rounded-xl overflow-hidden shadow-lg border border-black/5">
+            <div className="relative h-[300px] sm:h-[600px] rounded-xl overflow-hidden shadow-lg border border-black/5 dark:border-white/20">
               <Image
                 src="/poskotempok.jpeg"
                 alt="Foto landscape utama KKT-144 di Desa Tempok"
@@ -51,18 +49,18 @@ export default function KKT144Page() {
                 priority
               />
             </div>
-            <figcaption className="text-sm text-gray-600 text-center">
-             KKT-144 Posko Tempok.
+            <figcaption className="text-sm text-gray-800 dark:text-ink text-center">
+              KKT-144 Posko Tempok.
             </figcaption>
           </figure>
         </section>
 
-        {/* --- 2 FOTO DI ATAS (BERSEBELAHAN) --- */}
+        {/* 2 FOTO DI ATAS (BERSEBELAHAN) */}
         <section>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {/* FOTO 1 */}
             <figure className="space-y-3">
-              <div className="relative h-48 sm:h-56 md:h-80 rounded-xl overflow-hidden border border-black/5 shadow-sm">
+              <div className="relative h-48 sm:h-56 md:h-80 rounded-xl overflow-hidden border border-black/5 dark:border-white/20 shadow-sm">
                 <Image
                   src="/bersamadpl.jpeg"
                   alt="Kegiatan KKT-144 di lapangan"
@@ -72,14 +70,14 @@ export default function KKT144Page() {
                   priority
                 />
               </div>
-              <figcaption className="text-sm text-gray-600 text-center">
+              <figcaption className="text-sm text-gray-800 dark:text-ink text-center">
                 Dokumentasi bersama Pengawas Lapangan di lokasi kegiatan.
               </figcaption>
             </figure>
 
             {/* FOTO 2 */}
             <figure className="space-y-3">
-              <div className="relative h-48 sm:h-56 md:h-80 rounded-xl overflow-hidden border border-black/5 shadow-sm">
+              <div className="relative h-48 sm:h-56 md:h-80 rounded-xl overflow-hidden border border-black/5 dark:border-white/20 shadow-sm">
                 <Image
                   src="/bersamadpl2.jpeg"
                   alt="Koordinasi tim KKT-144"
@@ -89,17 +87,14 @@ export default function KKT144Page() {
                   priority
                 />
               </div>
-              <figcaption className="text-sm text-gray-600 text-center">
+              <figcaption className="text-sm text-gray-800 dark:text-ink text-center">
                 Dokumentasi bersama Dosen Pembimbing Lapangan di lokasi kegiatan.
               </figcaption>
             </figure>
           </div>
         </section>
 
-        
-
         {/* GALERI BAWAH */}
-       {/* PROGRAM KERJA: KERJA BAKTI */}
 <section className="space-y-10">
   <h2 className="text-center text-3xl font-semibold text-ink">
     Dokumentasi Program Kerja KKT-144 Posko Tempok

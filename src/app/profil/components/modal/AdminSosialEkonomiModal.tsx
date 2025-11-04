@@ -35,26 +35,27 @@ export default function AdminSosialEkonomiModal({
       sektorPendukung: sektorPendukung.trim(),
       ringkasan: ringkasan.trim(),
       catatan: catatan.trim(),
-      lastUpdated: null, 
+      lastUpdated: null,
     });
   }
 
   return (
     <div
-      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 dark:bg-black/70"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl rounded-xl bg-white p-6 shadow-2xl"
+        className="relative w-full max-w-2xl rounded-xl bg-white p-6 shadow-2xl
+                   dark:bg-elev dark:border dark:border-border dark:text-ink transition-colors duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* HEADER */}
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h3 className="text-lg font-semibold text-ink">
+            <h3 className="text-lg font-semibold text-ink dark:text-ink">
               Edit Kondisi Sosial &amp; Ekonomi
             </h3>
-            <p className="text-[12px] text-gray-500 leading-relaxed">
+            <p className="text-[12px] text-gray-500 leading-relaxed dark:text-ink/70">
               Perbarui gambaran sosial ekonomi desa.
             </p>
           </div>
@@ -62,7 +63,8 @@ export default function AdminSosialEkonomiModal({
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="rounded-full p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
+            className="rounded-full p-1.5 text-gray-500 hover:bg-gray-100 
+                       dark:text-ink/70 dark:hover:bg-white/10 disabled:opacity-50"
             aria-label="Tutup"
           >
             <X size={18} />
@@ -74,24 +76,26 @@ export default function AdminSosialEkonomiModal({
           {/* KARTU 1: Penduduk */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-[12px] font-medium text-ink mb-1">
+              <label className="block text-[12px] font-medium text-ink mb-1 dark:text-ink">
                 Perkiraan Jumlah Penduduk
               </label>
               <input
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                           dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
                 value={jumlahPendudukTekstual}
                 disabled={isLoading}
                 onChange={(e) => setJumlahPendudukTekstual(e.target.value)}
                 placeholder={`Contoh: "1.234 jiwa" / "— jiwa"`}
               />
 
-              <label className="block text-[12px] font-medium text-ink mb-1 mt-4">
+              <label className="block text-[12px] font-medium text-ink mb-1 mt-4 dark:text-ink">
                 Catatan Penduduk
               </label>
               <input
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                           dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
                 value={catatanPenduduk}
                 disabled={isLoading}
                 onChange={(e) => setCatatanPenduduk(e.target.value)}
@@ -100,24 +104,26 @@ export default function AdminSosialEkonomiModal({
             </div>
 
             <div>
-              <label className="block text-[12px] font-medium text-ink mb-1">
+              <label className="block text-[12px] font-medium text-ink mb-1 dark:text-ink">
                 Pencaharian Utama
               </label>
               <input
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                           dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
                 value={mataPencaharian}
                 disabled={isLoading}
                 onChange={(e) => setMataPencaharian(e.target.value)}
                 placeholder="Contoh: Pertanian"
               />
 
-              <label className="block text-[12px] font-medium text-ink mb-1 mt-4">
+              <label className="block text-[12px] font-medium text-ink mb-1 mt-4 dark:text-ink">
                 Pekerjaan / Sektor Pendukung
               </label>
               <input
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
-                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                           focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                           dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
                 value={sektorPendukung}
                 disabled={isLoading}
                 onChange={(e) => setSektorPendukung(e.target.value)}
@@ -128,12 +134,13 @@ export default function AdminSosialEkonomiModal({
 
           {/* RINGKASAN */}
           <div>
-            <label className="block text-[12px] font-medium text-ink mb-1">
+            <label className="block text-[12px] font-medium text-ink mb-1 dark:text-ink">
               Ringkasan Sosial Ekonomi
             </label>
             <textarea
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm leading-relaxed
-                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                         dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
               rows={5}
               value={ringkasan}
               disabled={isLoading}
@@ -145,12 +152,13 @@ Warga Desa Tempok sebagian besar bergantung pada sektor pertanian — baik menge
 
           {/* CATATAN FOOTER */}
           <div>
-            <label className="block text-[12px] font-medium text-ink mb-1">
+            <label className="block text-[12px] font-medium text-ink mb-1 dark:text-ink">
               Catatan Tambahan (keterangan kecil di bawah)
             </label>
             <textarea
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm leading-relaxed
-                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                         focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100
+                         dark:bg-elev dark:border-border dark:text-ink dark:disabled:bg-elev/60"
               rows={3}
               value={catatan}
               disabled={isLoading}
@@ -166,7 +174,9 @@ Data sektor ekonomi desa akan dilengkapi dan diperbarui secara bertahap.`}
           <button
             onClick={onClose}
             disabled={isLoading}
-            className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 disabled:opacity-50"
+            className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 
+                       hover:bg-gray-200 disabled:opacity-50
+                       dark:bg-elev/60 dark:text-ink dark:hover:bg-elev/80"
           >
             Batal
           </button>

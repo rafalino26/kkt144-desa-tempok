@@ -1,30 +1,44 @@
 'use client';
 
-import { useSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import SessionExpiredModal from "../ui/SessionExpiredModal";
 
 export default function SessionWatcher() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [showExpired, setShowExpired] = useState(false);
 
   useEffect(() => {
-    if (status === "authenticated") {
-      localStorage.setItem("wasLoggedIn", "true");
-      setShowExpired(false);
-    }
-
-    // kalau session hilang tapi sebelumnya pernah login → tampilkan modal
-    if (status === "unauthenticated") {
-      const prevLogin = localStorage.getItem("wasLoggedIn");
-      if (prevLogin === "true") {
-        setShowExpired(true);
-        // hapus tanda biar gak muncul terus menerus
-        localStorage.removeItem("wasLoggedIn");
+    const checkSession = async () => {
+      const session = await getSession();
+      if (session) {
+        localStorage.setItem("wasLoggedIn", "true");
+        setShowExpired(false); 
+      } else {
+        const prevLogin = localStorage.getItem("wasLoggedIn");
+        console.log("Prev Login after session check:", prevLogin); 
+        if (prevLogin === "true") {
+          setShowExpired(true);
+          localStorage.removeItem("wasLoggedIn");
+        }
       }
-    }
-  }, [status]);
+    };
+
+
+    checkSession();
+
+
+    const interval = setInterval(() => {
+      checkSession();  
+    }, 5000); 
+
+
+    return () => clearInterval(interval);
+
+  }, [status]); 
+
 
   if (!showExpired) return null;
+
   return <SessionExpiredModal />;
 }

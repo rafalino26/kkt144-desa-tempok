@@ -20,17 +20,18 @@ export default function PotensiPertanianClient({ initialData }: Props) {
   return (
     <section className="space-y-10">
       {/* Penjelasan singkat */}
-    <div className="max-w-3xl text-left">
-  <h2 className="text-3xl font-semibold text-ink">
-    Potensi Pertanian Desa Tempok
-  </h2>
-  <p className="mt-3 text-sm text-gray-600">
-    Desa Tempok memiliki potensi besar di sektor pertanian, khususnya dalam tanaman hortikultura dan pangan. 
-    Tanaman-tanaman seperti kubis, cabai dan tomat menjadi komoditas utama yang banyak dibudidayakan di sini.
-  </p>
-</div>
-      {/* Hero sawah tetap */}
-      <div className="relative h-[400px] rounded-lg overflow-hidden shadow-lg">
+      <div className="max-w-3xl text-left">
+        <h2 className="text-3xl font-semibold text-ink dark:text-ink">
+          Potensi Pertanian Desa Tempok
+        </h2>
+        <p className="mt-3 text-sm text-gray-600 dark:text-ink/70">
+          Desa Tempok memiliki potensi besar di sektor pertanian, khususnya dalam tanaman hortikultura dan pangan. 
+          Tanaman-tanaman seperti kubis, cabai dan tomat menjadi komoditas utama yang banyak dibudidayakan di sini.
+        </p>
+      </div>
+
+      {/* Hero sawah */}
+      <div className="relative h-[400px] rounded-lg overflow-hidden shadow-lg ring-1 ring-black/5 dark:ring-white/10">
         <Image
           src="/sawah.jpeg"
           alt="Sawah Desa Tempok"
@@ -40,18 +41,21 @@ export default function PotensiPertanianClient({ initialData }: Props) {
         />
       </div>
 
-
       {/* Kategori + daftar tanaman */}
       <div className="space-y-12">
         {initialData.items.map((item, idxCat) => (
           <div key={item.id} className="space-y-8">
-            {/* Header kategori: TANPA gambar, center */}
+            {/* Header kategori */}
             <div className="text-center max-w-3xl mx-auto">
-              <h3 className="text-3xl font-semibold text-ink">{item.judul}</h3>
-              <p className="mt-3 text-sm text-gray-600">{item.ringkasan}</p>
+              <h3 className="text-3xl font-semibold text-ink dark:text-ink">
+                {item.judul}
+              </h3>
+              <p className="mt-3 text-sm text-gray-600 dark:text-ink/70">
+                {item.ringkasan}
+              </p>
             </div>
 
-            {/* Daftar tanaman: gambar + teks selang-seling */}
+            {/* Daftar tanaman */}
             <div className="space-y-10">
               {item.tanaman.map((tanaman, index) => {
                 const imgOrder = index % 2 === 0 ? 'md:order-1' : 'md:order-2';
@@ -66,12 +70,19 @@ export default function PotensiPertanianClient({ initialData }: Props) {
                         src={tanaman.gambar}
                         alt={tanaman.nama}
                         fill
-                        className="object-cover rounded-lg shadow-lg"
+                        className="object-cover rounded-lg shadow-lg ring-1 ring-black/5 dark:ring-white/10"
                       />
                     </div>
-                    <div className={`flex flex-col justify-center text-center md:text-left ${textOrder}`}>
-                      <h4 className="text-xl font-semibold text-ink">{tanaman.nama}</h4>
-                      <p className="mt-3 text-sm text-gray-700">{tanaman.deskripsi}</p>
+
+                    <div
+                      className={`flex flex-col justify-center text-center md:text-left ${textOrder}`}
+                    >
+                      <h4 className="text-xl font-semibold text-ink dark:text-ink">
+                        {tanaman.nama}
+                      </h4>
+                      <p className="mt-3 text-sm text-gray-700 dark:text-ink/70">
+                        {tanaman.deskripsi}
+                      </p>
                     </div>
                   </div>
                 );
@@ -80,7 +91,7 @@ export default function PotensiPertanianClient({ initialData }: Props) {
 
             {/* Pemisah halus antar kategori */}
             {idxCat < initialData.items.length - 1 && (
-              <hr className="my-2 border-black/10" />
+              <hr className="my-2 border-black/10 dark:border-white/10" />
             )}
           </div>
         ))}

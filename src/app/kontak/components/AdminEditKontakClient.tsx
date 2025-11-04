@@ -40,7 +40,7 @@ export default function AdminEditKontakClient({ initialInfo }: Props) {
       <button
         onClick={() => setOpen(true)}
         className="inline-flex items-center gap-1.5 self-start rounded-full
-                   bg-brand-light/70 px-3 py-1 text-xs font-medium text-brand-dark
+                   bg-brand-primary px-3 py-1 text-xs font-medium text-brand-dark
                    ring-1 ring-brand-dark/10 hover:bg-brand-light transition-colors"
       >
         <Edit size={12} /> Edit Informasi
@@ -53,19 +53,21 @@ export default function AdminEditKontakClient({ initialInfo }: Props) {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl border border-black/5"
+            className="w-full max-w-lg rounded-xl bg-white dark:bg-elev p-6 shadow-2xl
+                       border border-black/5 dark:border-border"
           >
             <div className="flex items-start justify-between mb-4">
               <div>
-                <h3 className="text-lg font-semibold text-ink">Edit Informasi Kontak</h3>
-                <p className="text-[12px] text-gray-500 leading-relaxed">
+                <h3 className="text-lg font-semibold text-ink dark:text-ink">Edit Informasi Kontak</h3>
+                <p className="text-[12px] text-gray-500 dark:text-ink/70 leading-relaxed">
                   Perbarui alamat, nomor telepon, email, jam layanan, dan tautan medsos.
                 </p>
               </div>
               <button
                 onClick={() => setOpen(false)}
                 disabled={isPending}
-                className="rounded-full p-1.5 text-gray-500 hover:bg-gray-100 disabled:opacity-50"
+                className="rounded-full p-1.5 text-gray-500 dark:text-ink/70
+                           hover:bg-gray-100 dark:hover:bg-white/10 disabled:opacity-50"
                 aria-label="Tutup"
               >
                 <X size={18} />
@@ -74,10 +76,13 @@ export default function AdminEditKontakClient({ initialInfo }: Props) {
 
             <div className="max-h-[60vh] overflow-y-auto pr-2 space-y-4 text-sm">
               <div>
-                <label className="block text-[12px] font-medium text-ink mb-1">Alamat</label>
+                <label className="block text-[12px] font-medium text-ink dark:text-ink/80 mb-1">Alamat</label>
                 <textarea
                   rows={3}
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                  className="w-full rounded-md border border-gray-300 dark:border-border
+                             px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink
+                             focus:outline-none focus:ring-2 focus:ring-brand-primary/60
+                             disabled:bg-gray-100 dark:disabled:bg-elev/70"
                   value={form.alamat}
                   onChange={(e) => setForm((s) => ({ ...s, alamat: e.target.value }))}
                   disabled={isPending}
@@ -86,20 +91,26 @@ export default function AdminEditKontakClient({ initialInfo }: Props) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[12px] font-medium text-ink mb-1">Telepon</label>
+                  <label className="block text-[12px] font-medium text-ink dark:text-ink/80 mb-1">Telepon</label>
                   <input
                     type="text"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                    className="w-full rounded-md border border-gray-300 dark:border-border
+                               px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink
+                               focus:outline-none focus:ring-2 focus:ring-brand-primary/60
+                               disabled:bg-gray-100 dark:disabled:bg-elev/70"
                     value={form.telepon}
                     onChange={(e) => setForm((s) => ({ ...s, telepon: e.target.value }))}
                     disabled={isPending}
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-medium text-ink mb-1">Email</label>
+                  <label className="block text-[12px] font-medium text-ink dark:text-ink/80 mb-1">Email</label>
                   <input
                     type="email"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                    className="w-full rounded-md border border-gray-300 dark:border-border
+                               px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink
+                               focus:outline-none focus:ring-2 focus:ring-brand-primary/60
+                               disabled:bg-gray-100 dark:disabled:bg-elev/70"
                     value={form.email}
                     onChange={(e) => setForm((s) => ({ ...s, email: e.target.value }))}
                     disabled={isPending}
@@ -108,10 +119,13 @@ export default function AdminEditKontakClient({ initialInfo }: Props) {
               </div>
 
               <div>
-                <label className="block text-[12px] font-medium text-ink mb-1">Jam Layanan</label>
+                <label className="block text-[12px] font-medium text-ink dark:text-ink/80 mb-1">Jam Layanan</label>
                 <input
                   type="text"
-                  className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                  className="w-full rounded-md border border-gray-300 dark:border-border
+                             px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink
+                             focus:outline-none focus:ring-2 focus:ring-brand-primary/60
+                             disabled:bg-gray-100 dark:disabled:bg-elev/70"
                   value={form.jam}
                   onChange={(e) => setForm((s) => ({ ...s, jam: e.target.value }))}
                   disabled={isPending}
@@ -120,20 +134,30 @@ export default function AdminEditKontakClient({ initialInfo }: Props) {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[12px] font-medium text-ink mb-1">Facebook (opsional)</label>
+                  <label className="block text-[12px] font-medium text-ink dark:text-ink/80 mb-1">
+                    Facebook (opsional)
+                  </label>
                   <input
                     type="url"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                    className="w-full rounded-md border border-gray-300 dark:border-border
+                               px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink
+                               focus:outline-none focus:ring-2 focus:ring-brand-primary/60
+                               disabled:bg-gray-100 dark:disabled:bg-elev/70"
                     value={form.facebook ?? ''}
                     onChange={(e) => setForm((s) => ({ ...s, facebook: e.target.value }))}
                     disabled={isPending}
                   />
                 </div>
                 <div>
-                  <label className="block text-[12px] font-medium text-ink mb-1">Instagram (opsional)</label>
+                  <label className="block text-[12px] font-medium text-ink dark:text-ink/80 mb-1">
+                    Instagram (opsional)
+                  </label>
                   <input
                     type="url"
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/60 disabled:bg-gray-100"
+                    className="w-full rounded-md border border-gray-300 dark:border-border
+                               px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink
+                               focus:outline-none focus:ring-2 focus:ring-brand-primary/60
+                               disabled:bg-gray-100 dark:disabled:bg-elev/70"
                     value={form.instagram ?? ''}
                     onChange={(e) => setForm((s) => ({ ...s, instagram: e.target.value }))}
                     disabled={isPending}
@@ -146,14 +170,17 @@ export default function AdminEditKontakClient({ initialInfo }: Props) {
               <button
                 onClick={() => setOpen(false)}
                 disabled={isPending}
-                className="rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-200 disabled:opacity-50"
+                className="rounded-md bg-gray-100 dark:bg-elev/60
+                           px-4 py-2 text-sm font-medium text-gray-800 dark:text-ink
+                           hover:bg-gray-200 dark:hover:bg-elev/80 disabled:opacity-50"
               >
                 Batal
               </button>
               <button
                 onClick={handleSave}
                 disabled={isPending}
-                className="rounded-md bg-brand-primary/80 px-4 py-2 text-sm font-medium text-brand-dark ring-1 ring-brand-dark/20 hover:bg-brand-primary disabled:opacity-50"
+                className="rounded-md bg-brand-primary/80 px-4 py-2 text-sm font-medium text-brand-dark
+                           ring-1 ring-brand-dark/20 hover:bg-brand-primary disabled:opacity-50"
               >
                 {isPending ? 'Menyimpan…' : 'Simpan Perubahan'}
               </button>

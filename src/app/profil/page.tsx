@@ -1,6 +1,6 @@
 import { db } from '@/app/lib/prisma';
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
 
 import IdentitasDesaSection from './components/IdentitasDesaSection';
 import SejarahDesaSection from './components/SejarahDesaSection';
@@ -13,45 +13,42 @@ export default async function ProfilDesaPage() {
   const session = await getServerSession(authOptions);
   const isAdmin = !!session?.user;
 
-   const geoRow = await db.profilGeografis.findFirst();
-
-const geoInitialData = geoRow
-  ? {
-      deskripsiLokasi: geoRow.deskripsiLokasi ?? '',
-      batasUtara: geoRow.batasUtara ?? '',
-      batasTimur: geoRow.batasTimur ?? '',
-      batasSelatan: geoRow.batasSelatan ?? '',
-      batasBarat: geoRow.batasBarat ?? '',
-      googleMapsUrl: geoRow.googleMapsUrl ?? '',
-      lintangUtara: geoRow.lintangUtara ?? '',
-      bujurTimur: geoRow.bujurTimur ?? '',
-      ketinggian: geoRow.ketinggian ?? '',
-      topografi: geoRow.topografi ?? '',
-      hidrologi: geoRow.hidrologi ?? '',
-      klimatologi: geoRow.klimatologi ?? '',
-      lastUpdated: geoRow.updatedAt
-        ? geoRow.updatedAt.toISOString()
-        : null,
-    }
-  : {
-      deskripsiLokasi: `Desa Tempok terletak di Kecamatan Tompaso, Kabupaten Minahasa.
+  // --- DATA FETCHING ---
+  const geoRow = await db.profilGeografis.findFirst();
+  const geoInitialData = geoRow
+    ? {
+        deskripsiLokasi: geoRow.deskripsiLokasi ?? '',
+        batasUtara: geoRow.batasUtara ?? '',
+        batasTimur: geoRow.batasTimur ?? '',
+        batasSelatan: geoRow.batasSelatan ?? '',
+        batasBarat: geoRow.batasBarat ?? '',
+        googleMapsUrl: geoRow.googleMapsUrl ?? '',
+        lintangUtara: geoRow.lintangUtara ?? '',
+        bujurTimur: geoRow.bujurTimur ?? '',
+        ketinggian: geoRow.ketinggian ?? '',
+        topografi: geoRow.topografi ?? '',
+        hidrologi: geoRow.hidrologi ?? '',
+        klimatologi: geoRow.klimatologi ?? '',
+        lastUpdated: geoRow.updatedAt ? geoRow.updatedAt.toISOString() : null,
+      }
+    : {
+        deskripsiLokasi: `Desa Tempok terletak di Kecamatan Tompaso, Kabupaten Minahasa.
 Wilayah desa berada di kawasan dataran tinggi Minahasa
 dengan lahan pertanian dan permukiman warga.
 Perkiraan ketinggian: > 600 mdpl (akan dikonfirmasi).`,
-      batasUtara: '(belum diisi)',
-      batasTimur: '(belum diisi)',
-      batasSelatan: '(belum diisi)',
-      batasBarat: '(belum diisi)',
-      googleMapsUrl: '',
-      lintangUtara: '(belum diisi)',
-      bujurTimur: '(belum diisi)',
-      ketinggian: '(belum diisi)',
-      topografi: '(belum diisi)',
-      hidrologi: '(belum diisi)',
-      klimatologi: '(belum diisi)',
-      lastUpdated: null,
-    };
-
+        batasUtara: '(belum diisi)',
+        batasTimur: '(belum diisi)',
+        batasSelatan: '(belum diisi)',
+        batasBarat: '(belum diisi)',
+        googleMapsUrl: '',
+        lintangUtara: '(belum diisi)',
+        bujurTimur: '(belum diisi)',
+        ketinggian: '(belum diisi)',
+        topografi: '(belum diisi)',
+        hidrologi: '(belum diisi)',
+        klimatologi: '(belum diisi)',
+        lastUpdated: null,
+      };
 
   const identRow = await db.profilIdentitas.findFirst();
   const identInitialData = identRow
@@ -82,52 +79,50 @@ Perkiraan ketinggian: > 600 mdpl (akan dikonfirmasi).`,
         lastUpdated: null,
       };
 
-const perangkatRows = await db.profilPerangkatDesa.findMany({
-  orderBy: { urutan: 'asc' },
-});
+  const perangkatRows = await db.profilPerangkatDesa.findMany({
+    orderBy: { urutan: 'asc' },
+  });
 
-const perangkatInitialData = perangkatRows.map(row => ({
-  id: row.id,
-  nama: row.nama,
-  jabatan: row.jabatan,
-  urutan: row.urutan,
-  updatedAt: row.updatedAt.toISOString(),
-}));
+  const perangkatInitialData = perangkatRows.map((row) => ({
+    id: row.id,
+    nama: row.nama,
+    jabatan: row.jabatan,
+    urutan: row.urutan,
+    updatedAt: row.updatedAt.toISOString(),
+  }));
 
-const visiMisiRow = await db.profilVisiMisi.findFirst();
+  const visiMisiRow = await db.profilVisiMisi.findFirst();
+  const visiMisiInitialData = visiMisiRow
+    ? {
+        visi: visiMisiRow.visi,
+        misi: Array.isArray(visiMisiRow.misi)
+          ? (visiMisiRow.misi as string[])
+          : [],
+        lastUpdated: visiMisiRow.updatedAt
+          ? visiMisiRow.updatedAt.toISOString()
+          : null,
+      }
+    : {
+        visi: '“Mewujudkan Desa Tempok yang mandiri, maju, dan sejahtera melalui pemerataan pembangunan serta pemberdayaan masyarakat.”',
+        misi: [
+          'Meningkatkan pelayanan publik yang transparan dan mudah diakses.',
+          'Mendorong ekonomi masyarakat berbasis potensi lokal.',
+          'Membangun infrastruktur desa secara merata dan bertahap.',
+          'Menjaga kerukunan, keamanan, dan partisipasi warga.',
+        ],
+        lastUpdated: null,
+      };
 
-const visiMisiInitialData = visiMisiRow
-  ? {
-      visi: visiMisiRow.visi,
-      misi: Array.isArray(visiMisiRow.misi)
-        ? (visiMisiRow.misi as string[])
-        : [],
-      lastUpdated: visiMisiRow.updatedAt
-        ? visiMisiRow.updatedAt.toISOString()
-        : null,
-    }
-  : {
-      visi: '“Mewujudkan Desa Tempok yang mandiri, maju, dan sejahtera melalui pemerataan pembangunan serta pemberdayaan masyarakat.”',
-      misi: [
-        'Meningkatkan pelayanan publik yang transparan dan mudah diakses.',
-        'Mendorong ekonomi masyarakat berbasis potensi lokal.',
-        'Membangun infrastruktur desa secara merata dan bertahap.',
-        'Menjaga kerukunan, keamanan, dan partisipasi warga.',
-      ],
-      lastUpdated: null,
-    };
-
-    const sejarahRow = await db.profilSejarah.findFirst();
-
-const sejarahInitialData = sejarahRow
-  ? {
-      content: sejarahRow.content,
-      lastUpdated: sejarahRow.updatedAt
-        ? sejarahRow.updatedAt.toISOString()
-        : null,
-    }
-  : {
-      content: `Desa Tempok merupakan salah satu desa di Kecamatan Tompaso,
+  const sejarahRow = await db.profilSejarah.findFirst();
+  const sejarahInitialData = sejarahRow
+    ? {
+        content: sejarahRow.content,
+        lastUpdated: sejarahRow.updatedAt
+          ? sejarahRow.updatedAt.toISOString()
+          : null,
+      }
+    : {
+        content: `Desa Tempok merupakan salah satu desa di Kecamatan Tompaso,
 Kabupaten Minahasa, Sulawesi Utara. Permukiman ini berkembang
 sebagai bagian dari wilayah Minahasa yang dikenal dengan tradisi
 pertanian dan kehidupan komunitas yang kuat.
@@ -135,64 +130,60 @@ pertanian dan kehidupan komunitas yang kuat.
 Nama “Tempok” diyakini berasal dari penamaan lokal masyarakat setempat.
 Seiring waktu, desa ini tumbuh sebagai pusat aktivitas warga di bidang
 pertanian, usaha rumah tangga, dan kegiatan sosial.`,
-      lastUpdated: null,
-    };
+        lastUpdated: null,
+      };
 
-    const sosEkRow = await db.profilSosialEkonomi.findFirst();
+  const sosEkRow = await db.profilSosialEkonomi.findFirst();
+  const sosialEkonomiInitialData = sosEkRow
+    ? {
+        jumlahPendudukTekstual: sosEkRow.jumlahPendudukTekstual ?? '— jiwa',
+        catatanPenduduk:
+          sosEkRow.catatanPenduduk ?? 'menunggu data resmi pemerintah desa',
+        mataPencaharian: sosEkRow.mataPencaharian ?? 'Pertanian',
+        sektorPendukung: sosEkRow.sektorPendukung ?? 'Pekerja harian & jasa',
+        ringkasan: sosEkRow.ringkasan ?? '',
+        catatan:
+          sosEkRow.catatan ??
+          'Data sektor ekonomi desa akan dilengkapi dan diperbarui secara bertahap. Grafik profesi penduduk dapat dilihat pada halaman utama.',
+        lastUpdated: sosEkRow.updatedAt
+          ? sosEkRow.updatedAt.toISOString()
+          : null,
+      }
+    : {
+        jumlahPendudukTekstual: '— jiwa',
+        catatanPenduduk: 'menunggu data resmi pemerintah desa',
+        mataPencaharian: 'Pertanian',
+        sektorPendukung: 'Buruh, sopir, pedagang kecil',
+        ringkasan: `Warga Desa Tempok sebagian besar bergantung pada sektor pertanian — baik mengelola kebun sendiri maupun membantu di lahan keluarga. Komoditas spesifik (jenis tanaman, hasil kebun, dsb.) akan ditambahkan setelah data resmi dari pemerintah desa tersedia.
 
-const sosialEkonomiInitialData = sosEkRow
-  ? {
-      jumlahPendudukTekstual: sosEkRow.jumlahPendudukTekstual ?? '— jiwa',
-      catatanPenduduk: sosEkRow.catatanPenduduk ?? 'menunggu data resmi pemerintah desa',
+Selain bertani, ada juga warga yang bekerja sebagai tenaga harian lepas, jasa transport, dan pekerjaan informal lain. Sebagian kecil bekerja di sektor pemerintahan, pendidikan, atau pelayanan publik di luar desa.`,
+        catatan:
+          'Data sektor ekonomi desa akan dilengkapi dan diperbarui secara bertahap. Grafik profesi penduduk dapat dilihat pada halaman utama.',
+        lastUpdated: null,
+      };
 
-      mataPencaharian: sosEkRow.mataPencaharian ?? 'Pertanian',
-      sektorPendukung: sosEkRow.sektorPendukung ?? 'Pekerja harian & jasa',
-
-      ringkasan: sosEkRow.ringkasan ?? '',
-      catatan:
-        sosEkRow.catatan ??
-        'Data sektor ekonomi desa akan dilengkapi dan diperbarui secara bertahap. Grafik profesi penduduk dapat dilihat pada halaman utama.',
-
-      lastUpdated: sosEkRow.updatedAt
-        ? sosEkRow.updatedAt.toISOString()
-        : null,
-    }
-  : {
-      jumlahPendudukTekstual: '— jiwa',
-      catatanPenduduk: 'menunggu data resmi pemerintah desa',
-
-      mataPencaharian: 'Pertanian',
-      sektorPendukung: 'Buruh, sopir, pedagang kecil',
-
-      ringkasan:
-        `Warga Desa Tempok sebagian besar bergantung pada sektor pertanian — baik mengelola kebun sendiri maupun membantu di lahan keluarga. Komoditas spesifik (jenis tanaman, hasil kebun, dsb.) akan ditambahkan setelah data resmi dari pemerintah desa tersedia.\n\nSelain bertani, ada juga warga yang bekerja sebagai tenaga harian lepas, jasa transport, dan pekerjaan informal lain. Sebagian kecil bekerja di sektor pemerintahan, pendidikan, atau pelayanan publik di luar desa.`,
-      catatan:
-        'Data sektor ekonomi desa akan dilengkapi dan diperbarui secara bertahap. Grafik profesi penduduk dapat dilihat pada halaman utama.',
-
-      lastUpdated: null,
-    };
-
+  // --- RENDER ---
   return (
-    <main>
+    <main className="min-h-screen bg-muted dark:bg-elev text-ink dark:text-ink">
       <div className="container mx-auto p-4 sm:p-6 lg:p-8 space-y-12">
-
+        {/* HERO SECTION */}
         <section
           className="relative rounded-2xl overflow-hidden
-                     bg-gradient-to-br from-brand-primary/70 via-brand-light/60 to-brand-primary/70
+                     bg-brand-primary text-black
                      border border-black/5 shadow-sm p-6 md:p-10"
         >
           <div className="max-w-2xl">
-            <h1 className="mt-2 text-3xl sm:text-4xl font-semibold text-brand-dark">
+            <h1 className="mt-2 text-3xl sm:text-4xl font-semibold">
               Profil Desa Tempok
             </h1>
-
-            <p className="mt-2 text-brand-dark/90 text-sm sm:text-base leading-relaxed">
+            <p className="mt-2 text-sm sm:text-base leading-relaxed opacity-90">
               Gambaran umum Desa Tempok, Kecamatan Tompaso, Kabupaten Minahasa,
               Sulawesi Utara.
             </p>
           </div>
         </section>
 
+        {/* SECTIONS */}
         <div className="space-y-12">
           <IdentitasDesaSection
             isAdmin={isAdmin}
@@ -204,30 +195,23 @@ const sosialEkonomiInitialData = sosEkRow
             initialPerangkat={perangkatInitialData}
           />
 
-
-         <VisiMisiSection
+          <VisiMisiSection
             isAdmin={isAdmin}
             initialData={visiMisiInitialData}
           />
-
 
           <SejarahDesaSection
             isAdmin={isAdmin}
             initialData={sejarahInitialData}
           />
 
-          <GeografisSection
-            isAdmin={isAdmin}
-            initialData={geoInitialData}
-          />
+          <GeografisSection isAdmin={isAdmin} initialData={geoInitialData} />
 
-         <SosialEkonomiSection
+          <SosialEkonomiSection
             isAdmin={isAdmin}
             initialData={sosialEkonomiInitialData}
           />
-
         </div>
-
       </div>
     </main>
   );

@@ -15,7 +15,7 @@ export default function StatsSection({ stats, isAdmin, onEditClick }: StatsSecti
     <section className="relative">
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-ink">Sekilas Info</h2>
+          <h2 className="text-xl font-semibold text-ink ">Sekilas Info</h2>
           <p className="text-xs text-gray-500">
             Data dasar desa Tempok
           </p>
@@ -25,7 +25,7 @@ export default function StatsSection({ stats, isAdmin, onEditClick }: StatsSecti
           <button
             onClick={onEditClick}
             className="inline-flex items-center gap-1.5 self-start rounded-full
-             bg-brand-light/70 px-3 py-1 text-xs font-medium text-brand-dark
+             bg-brand-primary/90 px-3 py-1 text-xs font-medium text-brand-dark
              ring-1 ring-brand-dark/10
              hover:bg-brand-light hover:shadow-sm
              transition-colors"

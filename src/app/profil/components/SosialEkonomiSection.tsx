@@ -17,17 +17,18 @@ function MiniStatCard({
   note?: string;
 }) {
   return (
-    <div className="rounded-xl bg-gradient-to-br from-brand-primary/70 via-brand-light/60 to-brand-primary/60 p-5 shadow-sm border border-black/5">
-      <div className="text-[11px] text-brand-dark uppercase tracking-wide">
-        {label}
-      </div>
-      <div className="mt-2 text-2xl font-semibold text-brand-dark break-words">
+    <div
+      className="rounded-xl border border-black/5 shadow-sm 
+                 bg-brand-primary text-brand-dark
+                 dark:bg-brand-primary dark:text-brand-dark
+                 p-5 transition-colors"
+    >
+      <div className="text-[11px] uppercase tracking-wide">{label}</div>
+      <div className="mt-2 text-2xl font-semibold break-words">
         {value || '—'}
       </div>
       {note && (
-        <div className="mt-1 text-[11px] text-brand-dark break-words">
-          {note}
-        </div>
+        <div className="mt-1 text-[11px] opacity-90 break-words">{note}</div>
       )}
     </div>
   );
@@ -78,19 +79,21 @@ export default function SosialEkonomiSection({
       {/* HEADER */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold text-ink">
+          <h2 className="text-xl font-semibold text-ink dark:text-ink">
             Kondisi Sosial &amp; Ekonomi
           </h2>
 
-          <p className="text-sm text-gray-600 leading-relaxed max-w-xl">
+          <p className="text-sm text-gray-600 dark:text-ink/70 leading-relaxed max-w-xl">
             Gambaran singkat aktivitas ekonomi warga dan komposisi mata
             pencaharian di Desa Tempok.
           </p>
 
           {formattedUpdated && (
-            <p className="text-[11px] text-gray-500 leading-none">
+            <p className="text-[11px] text-gray-500 dark:text-ink/60 leading-none">
               Terakhir diperbarui:{' '}
-              <span className="font-medium text-ink">{formattedUpdated}</span>
+              <span className="font-medium text-ink dark:text-ink">
+                {formattedUpdated}
+              </span>
             </p>
           )}
         </div>
@@ -98,10 +101,10 @@ export default function SosialEkonomiSection({
         {isAdmin && (
           <button
             onClick={() => setIsModalOpen(true)}
+            disabled={isPending}
             className="inline-flex items-center gap-1.5 self-start rounded-full
                        bg-brand-primary/80 px-3 py-1 text-[11px] font-medium text-brand-dark
                        ring-1 ring-brand-dark/20 hover:bg-brand-primary transition-colors disabled:opacity-50"
-            disabled={isPending}
           >
             <Edit size={12} />
             Edit Sosial &amp; Ekonomi
@@ -130,8 +133,12 @@ export default function SosialEkonomiSection({
         />
       </div>
 
-      {/* DESKRIPSI UTAMA + 2 GAMBAR STATIS */}
-      <div className="rounded-xl bg-white p-6 shadow-sm border border-black/5 text-sm text-gray-700 leading-relaxed space-y-4">
+      {/* DESKRIPSI UTAMA + GAMBAR */}
+      <div
+        className="rounded-xl border border-black/5 bg-white p-6 shadow-sm 
+                   dark:bg-elev dark:border-border transition-colors
+                   text-sm text-gray-700 dark:text-ink leading-relaxed space-y-4"
+      >
         {paragraphs.length > 0 ? (
           paragraphs.map((para, idx) => (
             <p key={idx} className="whitespace-pre-line">
@@ -139,21 +146,21 @@ export default function SosialEkonomiSection({
             </p>
           ))
         ) : (
-          <p className="italic text-gray-500">
+          <p className="italic text-gray-500 dark:text-ink/60">
             Ringkasan sosial ekonomi desa belum diisi.
           </p>
         )}
 
-        {/* Catatan kecil di bawah paragraf */}
-        <p className="text-[11px] text-gray-500 leading-relaxed">
+        {/* Catatan */}
+        <p className="text-[11px] text-gray-500 dark:text-ink/60 leading-relaxed">
           {data.catatan && data.catatan.trim() !== ''
             ? data.catatan
             : 'Data sektor ekonomi desa akan dilengkapi dan diperbarui secara bertahap. Grafik profesi penduduk dapat dilihat pada halaman utama.'}
         </p>
 
-        {/* GALERI: 2 gambar statis di bawah catatan */}
+        {/* GALERI */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3">
-          <figure className="relative h-48 md:h-64 rounded-xl overflow-hidden border border-black/5 shadow-sm">
+          <figure className="relative h-48 md:h-64 rounded-xl overflow-hidden border border-black/5 dark:border-border shadow-sm">
             <Image
               src="/hortikultura.jpeg"
               alt="Aktivitas bertani di lahan"
@@ -164,7 +171,7 @@ export default function SosialEkonomiSection({
             />
           </figure>
 
-          <figure className="relative h-48 md:h-64 rounded-xl overflow-hidden border border-black/5 shadow-sm">
+          <figure className="relative h-48 md:h-64 rounded-xl overflow-hidden border border-black/5 dark:border-border shadow-sm">
             <Image
               src="/panen.jpeg"
               alt="Petani Desa Tempok saat panen"

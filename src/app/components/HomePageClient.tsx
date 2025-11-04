@@ -55,10 +55,9 @@ export default function HomePageClient({ initialData, isAdmin }: HomePageClientP
     startTransition(async () => {
       const result = await updateStatsData(newData);
       if (result.success && result.data) {
-  setStatsData(result.data);
-  setIsStatsModalOpen(false);
-}
- else {
+        setStatsData(result.data);
+        setIsStatsModalOpen(false);
+      } else {
         setErrorMessage(result.message || 'Gagal menyimpan data Statistik.');
       }
     });
@@ -76,15 +75,34 @@ export default function HomePageClient({ initialData, isAdmin }: HomePageClientP
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+      {/* Alert error */}
       {errorMessage && (
-        <div className="mb-4 rounded border border-red-400 bg-red-100 p-3 text-sm text-red-700">
-          Error: {errorMessage}
+        <div
+          role="alert"
+          className="
+            mb-4 rounded-xl border border-border
+            bg-muted/60 p-3 text-sm text-ink
+          "
+        >
+          <div className="flex items-start gap-2">
+            <span className="mt-0.5 inline-block size-2 rounded-full bg-red-500" />
+            <div>
+              <div className="font-semibold">Terjadi kesalahan</div>
+              <div className="opacity-90">{errorMessage}</div>
+            </div>
+          </div>
         </div>
       )}
 
       <div className="space-y-12">
         {isAdmin && (
-          <div className="rounded-xl border border-brand-dark/10 bg-brand-light/60 px-4 py-2 text-brand-dark flex items-center gap-2">
+          <div
+            className="
+              rounded-xl border border-border
+              bg-muted/50 px-4 py-2 text-ink
+              flex items-center gap-2
+            "
+          >
             <span className="inline-block size-2 rounded-full bg-brand-primary" />
             <span className="text-sm font-semibold tracking-wide uppercase">
               Admin Panel
@@ -128,6 +146,13 @@ export default function HomePageClient({ initialData, isAdmin }: HomePageClientP
           onClose={() => setIsStatsModalOpen(false)}
           onSave={handleSaveStats}
         />
+      )}
+
+      {/* Show loading state if isPending is true */}
+      {isPending && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="text-white">Menyimpan...</div>
+        </div>
       )}
     </div>
   );

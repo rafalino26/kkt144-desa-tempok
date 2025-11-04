@@ -24,41 +24,49 @@ export default function KontakClient() {
   };
 
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm border border-black/5 h-full flex flex-col justify-between">
+    <div className="rounded-xl bg-white dark:bg-elev p-6 shadow-sm border border-black/5 dark:border-border h-full flex flex-col justify-between">
       <div>
-        <h2 className="text-xl font-semibold text-ink mb-4">Kirim Pesan</h2>
+        <h2 className="text-xl font-semibold text-ink dark:text-ink mb-4">
+          Kirim Pesan
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-ink/70 mb-1">
+              Nama
+            </label>
             <input
               type="text"
               value={form.nama}
               onChange={(e) => setForm({ ...form, nama: e.target.value })}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-brand-primary focus:border-brand-primary"
+              className="w-full rounded-md border border-gray-300 dark:border-border px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink focus:outline-none focus:ring-2 focus:ring-brand-primary"
               placeholder="Nama lengkap Anda"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-ink/70 mb-1">
+              Email
+            </label>
             <input
               type="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-brand-primary focus:border-brand-primary"
+              className="w-full rounded-md border border-gray-300 dark:border-border px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink focus:outline-none focus:ring-2 focus:ring-brand-primary"
               placeholder="Alamat email Anda"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Pesan</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-ink/70 mb-1">
+              Pesan
+            </label>
             <textarea
               value={form.pesan}
               onChange={(e) => setForm({ ...form, pesan: e.target.value })}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-brand-primary focus:border-brand-primary"
+              className="w-full rounded-md border border-gray-300 dark:border-border px-3 py-2 text-sm bg-white dark:bg-elev text-ink dark:text-ink focus:outline-none focus:ring-2 focus:ring-brand-primary"
               rows={4}
               placeholder="Tulis pesan atau pertanyaan Anda..."
               required
@@ -75,7 +83,7 @@ export default function KontakClient() {
         </form>
 
         {status && (
-          <p className="mt-3 text-sm text-gray-600">
+          <p className="mt-3 text-sm text-gray-600 dark:text-ink/80">
             {status}
           </p>
         )}

@@ -16,7 +16,6 @@ export default function VisiMisiSection({
   initialData,
 }: VisiMisiSectionProps) {
   const [data, setData] = useState<VisiMisiData>(initialData);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
@@ -45,18 +44,20 @@ export default function VisiMisiSection({
       {/* Header + tombol edit */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold text-ink">
+          <h2 className="text-xl font-semibold text-ink dark:text-ink">
             Visi &amp; Misi Desa
           </h2>
 
-          <p className="text-sm text-gray-600 leading-relaxed max-w-xl">
+          <p className="text-sm text-gray-600 dark:text-ink/70 leading-relaxed max-w-xl">
             Visi dan Misi dari Desa Tempok.
           </p>
 
           {formattedUpdated && (
-            <p className="text-[11px] text-gray-500 leading-none">
+            <p className="text-[11px] text-gray-500 dark:text-ink/60 leading-none">
               Terakhir diperbarui:{' '}
-              <span className="font-medium text-ink">{formattedUpdated}</span>
+              <span className="font-medium text-ink dark:text-ink">
+                {formattedUpdated}
+              </span>
             </p>
           )}
         </div>
@@ -65,7 +66,7 @@ export default function VisiMisiSection({
           <button
             onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center gap-1.5 self-start rounded-full
-                       bg-brand-primary/80 px-3 py-1 text-[11px] font-medium text-brand-dark
+                       bg-brand-primary px-3 py-1 text-[11px] font-medium text-brand-dark
                        ring-1 ring-brand-dark/20 hover:bg-brand-primary transition-colors"
           >
             <Edit size={12} />
@@ -74,32 +75,38 @@ export default function VisiMisiSection({
         )}
       </div>
 
-      {/* 2 kolom: Visi, Misi */}
+      {/* Grid 2 kolom */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* VISI */}
-        <div className="rounded-xl bg-white p-6 shadow-sm border border-black/5">
-          <h3 className="text-base font-semibold text-ink uppercase tracking-wide">
+        <div
+          className="rounded-xl border border-black/5 bg-white p-6 shadow-sm 
+                     dark:bg-elev dark:border-border transition-colors"
+        >
+          <h3 className="text-base font-semibold uppercase tracking-wide text-ink dark:text-ink">
             Visi
           </h3>
-          <p className="mt-3 text-sm text-gray-700 leading-relaxed whitespace-pre-line">
+          <p className="mt-3 text-sm text-gray-700 dark:text-ink leading-relaxed whitespace-pre-line">
             {data.visi || 'Belum ada visi.'}
           </p>
         </div>
 
         {/* MISI */}
-        <div className="rounded-xl bg-white p-6 shadow-sm border border-black/5">
-          <h3 className="text-base font-semibold text-ink uppercase tracking-wide">
+        <div
+          className="rounded-xl border border-black/5 bg-white p-6 shadow-sm 
+                     dark:bg-elev dark:border-border transition-colors"
+        >
+          <h3 className="text-base font-semibold uppercase tracking-wide text-ink dark:text-ink">
             Misi
           </h3>
 
           {data.misi && data.misi.length > 0 ? (
-            <ul className="mt-3 list-disc pl-5 text-sm text-gray-700 leading-relaxed space-y-2">
+            <ul className="mt-3 list-disc pl-5 text-sm text-gray-700 dark:text-ink leading-relaxed space-y-2">
               {data.misi.map((point, idx) => (
                 <li key={idx}>{point}</li>
               ))}
             </ul>
           ) : (
-            <p className="mt-3 text-sm text-gray-500 italic">
+            <p className="mt-3 text-sm italic text-gray-500 dark:text-ink/60">
               Belum ada daftar misi.
             </p>
           )}

@@ -39,7 +39,6 @@ export default function StrukturPemerintahanSection({
     setModalMode(null);
   }
 
-
   function handleSave(payload: { id?: string; nama: string; jabatan: string; urutan: number }) {
     startTransition(async () => {
       if (modalMode === 'create') {
@@ -93,12 +92,13 @@ export default function StrukturPemerintahanSection({
 
   return (
     <section className="space-y-6">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
         <div className="flex flex-col gap-1">
-          <h2 className="text-xl font-semibold text-ink">
+          <h2 className="text-xl font-semibold text-ink dark:text-ink">
             Struktur Pemerintahan Desa
           </h2>
-          <p className="text-sm text-gray-600 leading-relaxed max-w-xl">
+          <p className="text-sm text-gray-600 dark:text-ink/70 leading-relaxed max-w-xl">
             Daftar perangkat desa yang bertugas melayani masyarakat Desa Tempok.
           </p>
         </div>
@@ -107,7 +107,7 @@ export default function StrukturPemerintahanSection({
           <button
             onClick={openCreateModal}
             className="inline-flex items-center gap-1.5 self-start rounded-full
-                       bg-brand-primary/80 px-3 py-1 text-[11px] font-medium text-brand-dark
+                       bg-brand-primary/80 px-3 py-1 text-[11px] font-medium text-black
                        ring-1 ring-brand-dark/20 hover:bg-brand-primary transition-colors"
           >
             <Plus size={12} />
@@ -116,23 +116,28 @@ export default function StrukturPemerintahanSection({
         )}
       </div>
 
+      {/* Grid Perangkat */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {perangkat.map((p) => (
           <div
             key={p.id}
-            className="relative rounded-xl bg-brand-light/70 text-brand-dark p-4 shadow-sm border border-black/5 text-center text-sm flex flex-col items-center justify-center"
+            className="relative rounded-xl border border-black/5 bg-brand-primary p-4
+                       text-black shadow-sm text-center text-sm flex flex-col items-center justify-center
+                       hover:shadow-md transition-all"
           >
-            <div className="text-[13px] font-semibold text-brand-dark leading-snug text-center">
+            <div className="text-[13px] font-semibold leading-snug text-center">
               {p.nama || '(Nama)'}
             </div>
 
-            <div className="mt-2 px-2 py-1 text-[10px] font-medium leading-none tracking-wide text-brand-dark">
+            <div className="mt-2 px-2 py-1 text-[10px] font-medium leading-none tracking-wide opacity-90">
               {p.jabatan || '(Jabatan)'}
             </div>
+
             {isAdmin && (
               <button
-                className="absolute right-2 top-2 inline-flex items-center rounded-full bg-white/70 p-1 text-[10px] text-brand-dark ring-1 ring-black/10 hover:bg-white"
                 onClick={() => openEditModal(p)}
+                className="absolute right-2 top-2 inline-flex items-center rounded-full 
+                           bg-white/80 p-1 text-[10px] text-black ring-1 ring-black/10 hover:bg-white transition"
               >
                 <Edit size={12} />
               </button>
