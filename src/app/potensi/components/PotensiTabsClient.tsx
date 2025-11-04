@@ -10,7 +10,7 @@ export default function PotensiTabsClient() {
   const isPertanian = !isPeternakan;
 
   return (
-    <div className="flex justify-center border-b border-gray-200 dark:border-border -mt-5 pb-2 transition-colors duration-300">
+    <div className="flex justify-center border-b border-gray-200 dark:border-border -mt-2 pb-2 transition-colors duration-300">
       <div className="flex gap-6">
         <TabLink href="/potensi" active={isPertanian} label="Pertanian" />
         <TabLink href="/potensi/peternakan" active={isPeternakan} label="Peternakan" />
