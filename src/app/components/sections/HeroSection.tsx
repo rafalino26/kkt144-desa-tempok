@@ -66,7 +66,7 @@ export default function HeroSection({ title, subtitle, isAdmin, onEditClick }: H
             className="
               inline-flex items-center rounded-lg
               border border-brand-dark/30 px-4 py-2 text-sm font-medium text-brand-dark hover:bg-white/50
-              dark:border-border dark:text-ink dark:hover:bg-muted/40
+               dark:text-black dark:hover:bg-muted/40
             "
           >
             Kontak
