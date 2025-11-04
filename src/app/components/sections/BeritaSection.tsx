@@ -75,7 +75,7 @@ export default function BeritaSection({ posts, isAdmin }: BeritaSectionProps) {
           href="/berita"
           className="
             inline-flex items-center gap-1.5 self-start rounded-full
-            bg-brand-primary/90 px-3 py-1 text-xs font-medium text-brand-dark
+            bg-brand-primary/90 px-3 py-1 text-xs font-medium text-black
             ring-1 ring-brand-dark/10
             hover:bg-brand-light hover:shadow-sm
             transition-colors

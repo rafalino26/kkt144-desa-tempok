@@ -151,7 +151,7 @@ export default function ChartSection({ isAdmin, profesiData, onSaveProfesi }: Ch
               onClick={() => setIsModalOpen(true)}
               className="
                 inline-flex items-center gap-1.5 self-start rounded-full
-                bg-brand-primary/90 px-3 py-1 text-xs font-medium text-brand-dark
+                bg-brand-primary/90 px-3 py-1 text-xs font-medium text-black
                 ring-1 ring-brand-dark/10
                 hover:bg-brand-light hover:shadow-sm
                 transition-colors
@@ -178,8 +178,8 @@ export default function ChartSection({ isAdmin, profesiData, onSaveProfesi }: Ch
 
           {formattedUpdatedAt && (
             <div className="mt-6 border-t border-gray-100 dark:border-border pt-4 text-center">
-              <p className="text-[11px] leading-tight text-gray-500 dark:text-ink/70">
-                <span className="block text-[10px] uppercase tracking-wide text-gray-400 dark:text-ink/60">
+              <p className="text-[11px] leading-tight dark:text-brand-primary">
+                <span className="block text-[10px] uppercase tracking-wide text-gray-400 dark:text-brand-primary">
                   Terakhir diperbarui
                 </span>
                 <span className="font-medium text-gray-600 dark:text-ink/80">

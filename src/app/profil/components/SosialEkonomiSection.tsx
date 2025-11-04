@@ -19,8 +19,8 @@ function MiniStatCard({
   return (
     <div
       className="rounded-xl border border-black/5 shadow-sm 
-                 bg-brand-primary text-brand-dark
-                 dark:bg-brand-primary dark:text-brand-dark
+                 bg-brand-primary text-black
+                 dark:bg-brand-primary dark:text-black
                  p-5 transition-colors"
     >
       <div className="text-[11px] uppercase tracking-wide">{label}</div>
@@ -89,7 +89,7 @@ export default function SosialEkonomiSection({
           </p>
 
           {formattedUpdated && (
-            <p className="text-[11px] text-gray-500 dark:text-ink/60 leading-none">
+            <p className="text-[11px] text-gray-500 dark:text-brand-primary leading-none">
               Terakhir diperbarui:{' '}
               <span className="font-medium text-ink dark:text-ink">
                 {formattedUpdated}
@@ -103,7 +103,7 @@ export default function SosialEkonomiSection({
             onClick={() => setIsModalOpen(true)}
             disabled={isPending}
             className="inline-flex items-center gap-1.5 self-start rounded-full
-                       bg-brand-primary/80 px-3 py-1 text-[11px] font-medium text-brand-dark
+                       bg-brand-primary/80 px-3 py-1 text-[11px] font-medium text-black
                        ring-1 ring-brand-dark/20 hover:bg-brand-primary transition-colors disabled:opacity-50"
           >
             <Edit size={12} />

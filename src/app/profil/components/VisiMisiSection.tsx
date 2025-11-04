@@ -53,7 +53,7 @@ export default function VisiMisiSection({
           </p>
 
           {formattedUpdated && (
-            <p className="text-[11px] text-gray-500 dark:text-ink/60 leading-none">
+            <p className="text-[11px] text-gray-500 dark:text-brand-primary leading-none">
               Terakhir diperbarui:{' '}
               <span className="font-medium text-ink dark:text-ink">
                 {formattedUpdated}
@@ -66,7 +66,7 @@ export default function VisiMisiSection({
           <button
             onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center gap-1.5 self-start rounded-full
-                       bg-brand-primary px-3 py-1 text-[11px] font-medium text-brand-dark
+                       bg-brand-primary px-3 py-1 text-[11px] font-medium text-black
                        ring-1 ring-brand-dark/20 hover:bg-brand-primary transition-colors"
           >
             <Edit size={12} />

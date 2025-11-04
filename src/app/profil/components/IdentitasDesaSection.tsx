@@ -62,7 +62,7 @@ export default function IdentitasDesaSection({
           </h2>
 
           {formattedUpdated && (
-            <p className="text-[11px] text-gray-500 dark:text-ink/60 leading-none">
+            <p className="text-[11px] dark:text-brand-primary leading-none">
               Terakhir diperbarui:{' '}
               <span className="font-medium text-ink dark:text-ink">
                 {formattedUpdated}
@@ -77,7 +77,7 @@ export default function IdentitasDesaSection({
             className="inline-flex items-center gap-1.5 self-start rounded-full
                        bg-brand-primary/90 px-3 py-1 text-[11px] font-medium text-brand-dark
                        ring-1 ring-brand-dark/20 hover:bg-brand-primary
-                       dark:text-ink dark:ring-0 dark:hover:bg-brand-primary/50
+                       dark:text-black dark:ring-0 dark:hover:bg-brand-primary/50
                        transition-colors"
           >
             <Edit size={12} />

@@ -24,6 +24,15 @@ export default function StrukturPemerintahanSection({
   const [selectedItem, setSelectedItem] = useState<PerangkatDesaItem | null>(null);
   const [isPending, startTransition] = useTransition();
 
+  // Format tanggal terakhir diperbarui
+  const formattedUpdated = perangkat[0]?.updatedAt
+    ? new Date(perangkat[0].updatedAt).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+    : null;
+
   function openCreateModal() {
     setSelectedItem(null);
     setModalMode('create');
@@ -101,6 +110,16 @@ export default function StrukturPemerintahanSection({
           <p className="text-sm text-gray-600 dark:text-ink/70 leading-relaxed max-w-xl">
             Daftar perangkat desa yang bertugas melayani masyarakat Desa Tempok.
           </p>
+
+          {/* Tampilkan Terakhir Diperbarui */}
+          {formattedUpdated && (
+            <p className="text-[11px] dark:text-brand-primary leading-none">
+              Terakhir diperbarui:{' '}
+              <span className="font-medium text-ink dark:text-ink">
+                {formattedUpdated}
+              </span>
+            </p>
+          )}
         </div>
 
         {isAdmin && (
