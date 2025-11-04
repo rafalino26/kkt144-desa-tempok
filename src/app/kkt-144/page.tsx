@@ -95,12 +95,12 @@ export default function KKT144Page() {
         </section>
 
         {/* GALERI BAWAH */}
-<section className="space-y-10">
+<section className="space-y-10 pt-20">
   <h2 className="text-center text-3xl font-semibold text-ink">
     Dokumentasi Program Kerja KKT-144 Posko Tempok
   </h2>
 
-  <div className="space-y-6">
+  <div className="space-y-6 pt-10">
     <h3 className="text-2xl font-semibold text-center text-ink">
       Program Tambahan - Sabtu Bersih (Kerja Bakti di Balai Desa)
     </h3>
@@ -165,9 +165,9 @@ export default function KKT144Page() {
     </div>
   </div>
 
-  <div className="space-y-6 pt-2">
+  <div className="space-y-6 pt-20">
     <h3 className="text-2xl font-semibold text-center text-ink">
-      Belajar Seru Penuh Kreasi (Belajar Mengajar)
+      Program Tambahan - Belajar Seru Penuh Kreasi (Belajar Mengajar)
     </h3>
 
     {/* BARIS ATAS */}
@@ -220,9 +220,9 @@ export default function KKT144Page() {
 {/* ========================================== */}
 {/* 3️⃣ PROGRAM: PENGENALAN ECOBIN */}
 {/* ========================================== */}
-<div className="space-y-6 pt-8">
+<div className="space-y-6 pt-20">
   <h3 className="text-2xl font-semibold text-center text-ink">
-    Pengenalan Ecobin (Pembuatan dan Pemilahan Sampah Organik dan Non-Organik) dan PHBS (Perilaku Hidup Bersih dan Sehat), Pendampingan cuci tangan menurut WHO
+    Program Tambahan - Pengenalan Ecobin (Pembuatan dan Pemilahan Sampah Organik dan Non-Organik) dan PHBS (Perilaku Hidup Bersih dan Sehat), Pendampingan cuci tangan menurut WHO
   </h3>
 
   {/* GRID FOTO ATAS (3 FOTO) */}
@@ -285,9 +285,9 @@ export default function KKT144Page() {
 {/* ========================================== */}
 {/* 4️⃣ PROGRAM: SENSUS PENDUDUK (PENDATAAN) */}
 {/* ========================================== */}
-<div className="space-y-6 pt-8">
+<div className="space-y-6 pt-20">
   <h3 className="text-2xl font-semibold text-center text-ink">
-    Sensus Penduduk (Pendataan)
+    Program Tambahan - Sensus Penduduk (Pendataan)
   </h3>
 
   {/* GRID FOTO ATAS (3 FOTO) */}
